@@ -1,7 +1,9 @@
 # Contributing
 
+*[Leia em Portugues](CONTRIBUTING.pt-BR.md)*
+
 1. Fork → branch (`feat/...`, `fix/...`) → PR.
-2. Todo código passa `ruff check`, `mypy --strict` e `pytest` antes do PR.
-3. Commits seguem Conventional Commits: `feat(scope): msg`, `fix(scope): msg`.
-4. Toy example deve continuar 100% offline e determinístico — PRs que quebram isso serão rejeitados.
-5. Novas integrações de domínio entram como plugin em `plugins/`, nunca alterando `core/`.
+2. All code must pass `ruff check`, `mypy --strict`, and `pytest` before the PR.
+3. Commits follow Conventional Commits: `feat(scope): msg`, `fix(scope): msg`.
+4. The toy example must remain 100% offline and deterministic — PRs that break this will be rejected.
+5. New domain integrations go as plugins in `plugins/`, never modifying `core/`.
