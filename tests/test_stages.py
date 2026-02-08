@@ -96,7 +96,7 @@ async def _run_pipeline_up_to_decision() -> DecisionResult:
 class TestSyntheticCollector:
     """Tests for SyntheticCollector (stages.collectors.synthetic)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_collect_returns_correct_number_of_events(self):
         cfg = SyntheticCollectorConfig(
             n_records=90, seed=42, anomaly_start=75, anomaly_magnitude=0.25, failure_rate=0.1
@@ -106,7 +106,7 @@ class TestSyntheticCollector:
 
         assert len(result.events) == 90
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_collect_is_deterministic_with_seed(self):
         cfg = SyntheticCollectorConfig(
             n_records=90, seed=42, anomaly_start=75, anomaly_magnitude=0.25, failure_rate=0.1
@@ -118,7 +118,7 @@ class TestSyntheticCollector:
         prices_b = [e.data.get("price") for e in result_b.events]
         assert prices_a == prices_b
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_collect_injects_anomalies_after_start(self):
         cfg_no_anomaly = SyntheticCollectorConfig(
             n_records=90, seed=42, anomaly_start=None, anomaly_magnitude=0.0, failure_rate=0.0
@@ -136,7 +136,7 @@ class TestSyntheticCollector:
                 f"Day {day}: anomaly price {anomaly_price} should exceed clean price {clean_price}"
             )
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_collect_injects_failures(self):
         cfg = SyntheticCollectorConfig(
             n_records=90, seed=42, anomaly_start=75, anomaly_magnitude=0.25, failure_rate=0.1
@@ -147,7 +147,7 @@ class TestSyntheticCollector:
         assert report.valid_records < report.total_records
         assert len(report.flags) > 0
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_collect_reliability_score_positive(self):
         cfg = SyntheticCollectorConfig(
             n_records=90, seed=42, anomaly_start=75, anomaly_magnitude=0.25, failure_rate=0.1
@@ -160,7 +160,7 @@ class TestSyntheticCollector:
 class TestAggregatorProcessor:
     """Tests for AggregatorProcessor (stages.processors.aggregator)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_process_produces_market_states(self):
         collector = SyntheticCollector(
             SyntheticCollectorConfig(n_records=90, seed=42, failure_rate=0.0)
@@ -173,7 +173,7 @@ class TestAggregatorProcessor:
         assert len(compression.states) > 0
         assert all(isinstance(s, MarketState) for s in compression.states)
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_process_weekly_granularity_bucketing(self):
         collector = SyntheticCollector(
             SyntheticCollectorConfig(n_records=14, seed=7, failure_rate=0.0)
@@ -189,7 +189,7 @@ class TestAggregatorProcessor:
         for state in compression.states:
             assert state.granularity == Granularity.WEEKLY
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_process_signal_aggregation(self):
         collector = SyntheticCollector(
             SyntheticCollectorConfig(n_records=7, seed=99, failure_rate=0.0)
@@ -205,7 +205,7 @@ class TestAggregatorProcessor:
         assert "price" in signal_names
         assert "demand" in signal_names
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_process_records_consumed_matches_events(self, collection_result):
         processor = AggregatorProcessor(AggregatorConfig(domain="test"))
         compression = await processor.process(collection_result)
@@ -216,7 +216,7 @@ class TestAggregatorProcessor:
 class TestSeasonalAnomalyDetector:
     """Tests for SeasonalAnomalyDetector (stages.analyzers.seasonal)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_detects_anomaly_with_high_deviation(self):
         prices = [100.0, 101.0, 99.0, 100.5, 200.0]
         states = _make_market_states(5, price_values=prices)
@@ -228,7 +228,7 @@ class TestSeasonalAnomalyDetector:
         assert len(result.hypotheses) >= 1
         assert "above" in result.hypotheses[0].statement.lower()
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_returns_no_hypotheses_for_normal_data(self):
         prices = [100.0, 100.1, 99.9, 100.0, 100.05]
         states = _make_market_states(5, price_values=prices)
@@ -239,7 +239,7 @@ class TestSeasonalAnomalyDetector:
 
         assert len(result.hypotheses) == 0
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_needs_minimum_periods_for_baseline(self):
         prices = [100.0, 200.0, 300.0]
         assert len(prices) < MIN_PERIODS_FOR_BASELINE
@@ -251,7 +251,7 @@ class TestSeasonalAnomalyDetector:
 
         assert len(result.hypotheses) == 0
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_states_analyzed_count(self, compression_result):
         analyzer = SeasonalAnomalyDetector(SeasonalAnalyzerConfig())
         result = await analyzer.analyze(compression_result)
@@ -262,7 +262,7 @@ class TestSeasonalAnomalyDetector:
 class TestConditionalScenarioEngine:
     """Tests for ConditionalScenarioEngine (stages.models.conditional)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_generates_cartesian_product_plus_baseline(self, hypothesis_result):
         cfg = ConditionalModelConfig()
         engine = ConditionalScenarioEngine(cfg)
@@ -271,7 +271,7 @@ class TestConditionalScenarioEngine:
         expected_cartesian = 3 * 3
         assert len(result.scenarios) == expected_cartesian + 1
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_baseline_probability_is_half(self, hypothesis_result):
         engine = ConditionalScenarioEngine(ConditionalModelConfig())
         result = await engine.simulate(hypothesis_result)
@@ -279,14 +279,14 @@ class TestConditionalScenarioEngine:
         assert result.baseline is not None
         assert result.baseline.probability == 0.5
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_at_least_two_scenarios(self, hypothesis_result):
         engine = ConditionalScenarioEngine(ConditionalModelConfig())
         result = await engine.simulate(hypothesis_result)
 
         assert len(result.scenarios) >= 2
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_baseline_is_in_scenarios_list(self, hypothesis_result):
         engine = ConditionalScenarioEngine(ConditionalModelConfig())
         result = await engine.simulate(hypothesis_result)
@@ -299,18 +299,18 @@ class TestConditionalScenarioEngine:
 class TestConditionalAlertEmitter:
     """Tests for ConditionalAlertEmitter (stages.actions.alert)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_produces_at_least_one_decision(self, simulation_result):
         emitter = ConditionalAlertEmitter(AlertConfig())
         result = await emitter.decide(simulation_result)
 
         assert len(result.decisions) >= 1
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_no_action_decision_when_nothing_qualifies(self):
         cfg = AlertConfig(min_probability=1.0, min_risk_level=RiskLevel.CRITICAL)
 
-        from universal_gear.core.contracts import Assumption, Scenario  # noqa: PLC0415
+        from universal_gear.core.contracts import Assumption, Scenario
 
         base_scenario = Scenario(
             name="baseline (status quo)",
@@ -341,7 +341,7 @@ class TestConditionalAlertEmitter:
         assert result.decisions[0].decision_type == DecisionType.REPORT
         assert "no actionable" in result.decisions[0].title.lower()
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_decision_from_full_pipeline(self):
         result = await _run_pipeline_up_to_decision()
 
@@ -351,14 +351,14 @@ class TestConditionalAlertEmitter:
 class TestBacktestMonitor:
     """Tests for BacktestMonitor (stages.monitors.backtest)."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_produces_one_scorecard_per_decision(self, decision_result):
         monitor = BacktestMonitor(BacktestConfig(seed=42))
         feedback = await monitor.evaluate(decision_result)
 
         assert len(feedback.scorecards) == len(decision_result.decisions)
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_deterministic_with_seed(self, decision_result):
         monitor_a = BacktestMonitor(BacktestConfig(seed=42))
         monitor_b = BacktestMonitor(BacktestConfig(seed=42))
@@ -373,7 +373,7 @@ class TestBacktestMonitor:
                 assert pvr_a.actual == pvr_b.actual
                 assert pvr_a.error_pct == pvr_b.error_pct
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_scorecard_decision_id_matches(self, decision_result):
         monitor = BacktestMonitor(BacktestConfig(seed=42))
         feedback = await monitor.evaluate(decision_result)

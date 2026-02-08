@@ -69,7 +69,7 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
 
     async def _collect_cepea(self) -> tuple[list[RawEvent], list[QualityFlag]]:
         try:
-            from agrobr import cepea  # noqa: PLC0415
+            from agrobr import cepea
         except ImportError as exc:
             raise CollectionError(
                 "agrobr not installed. Run: pip install universal-gear[agro]"
@@ -154,7 +154,7 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
 
     async def _collect_conab(self) -> tuple[list[RawEvent], list[QualityFlag]]:
         try:
-            from agrobr import conab  # noqa: PLC0415
+            from agrobr import conab
         except ImportError as exc:
             raise CollectionError(
                 "agrobr not installed. Run: pip install universal-gear[agro]"
@@ -223,7 +223,7 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
                     details="Price value is null",
                 )
             )
-        elif not isinstance(valor, (int, float)):
+        elif not isinstance(valor, int | float):
             flags.append(
                 QualityFlag(
                     field_name="valor",
@@ -236,7 +236,7 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
 
     def _is_valid_event(self, event: RawEvent) -> bool:
         valor = event.data.get("valor")
-        return valor is not None and isinstance(valor, (int, float))
+        return valor is not None and isinstance(valor, int | float)
 
 
 def _parse_timestamp(value: Any) -> datetime | None:
@@ -250,7 +250,7 @@ def _parse_timestamp(value: Any) -> datetime | None:
         dt = value
     else:
         try:
-            import pandas as pd  # noqa: PLC0415
+            import pandas as pd
 
             ts = pd.Timestamp(value)
             if ts is not pd.NaT:

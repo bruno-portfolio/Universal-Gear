@@ -58,7 +58,7 @@ class Normalizer:
 
     def _apply_unit_conversions(self, data: dict[str, Any]) -> dict[str, Any]:
         for key, value in data.items():
-            if isinstance(value, (int, float)) and key in self._unit_map:
+            if isinstance(value, int | float) and key in self._unit_map:
                 mapping = self._unit_map[key]
                 data[key] = value * mapping.factor
                 self._log.append(

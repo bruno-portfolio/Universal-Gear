@@ -85,7 +85,7 @@ def _make_scenario(**overrides) -> Scenario:
     return Scenario(**defaults)
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_source_meta_valid_construction():
     sm = _make_source_meta()
     assert sm.source_id == "test-src"
@@ -95,7 +95,7 @@ def test_source_meta_valid_construction():
     assert sm.expected_schema_version is None
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_raw_event_default_factories():
     source = _make_source_meta()
     before = datetime.now(UTC)
@@ -111,7 +111,7 @@ def test_raw_event_default_factories():
     assert event.schema_version is None
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_quality_flag_valid_construction():
     flag = QualityFlag(
         field_name="price",
@@ -124,13 +124,13 @@ def test_quality_flag_valid_construction():
     assert flag.details == "Row 5 is null"
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_data_quality_report_valid_ratio_normal(quality_report):
     ratio = quality_report.valid_ratio
     assert ratio == pytest.approx(17 / 20)
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_data_quality_report_valid_ratio_zero_total():
     source = _make_source_meta()
     report = DataQualityReport(
@@ -142,7 +142,7 @@ def test_data_quality_report_valid_ratio_zero_total():
     assert report.valid_ratio == 0.0
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_data_quality_report_reliability_score_bounds():
     source = _make_source_meta()
     with pytest.raises(ValidationError):
@@ -161,14 +161,14 @@ def test_data_quality_report_reliability_score_bounds():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_collection_result_valid_construction(collection_result):
     assert collection_result.stage == "observation"
     assert len(collection_result.events) == 20
     assert collection_result.quality_report.total_records == 20
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_signal_value_valid_construction():
     sig = _make_signal()
     assert sig.name == "price"
@@ -177,7 +177,7 @@ def test_signal_value_valid_construction():
     assert sig.original_unit is None
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_signal_value_confidence_bounds():
     with pytest.raises(ValidationError):
         _make_signal(confidence=1.01)
@@ -185,7 +185,7 @@ def test_signal_value_confidence_bounds():
         _make_signal(confidence=-0.01)
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_market_state_valid_construction(market_states):
     ms = market_states[0]
     assert isinstance(ms.state_id, UUID)
@@ -195,7 +195,7 @@ def test_market_state_valid_construction(market_states):
     assert ms.source_reliability == 0.9
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_market_state_requires_at_least_one_signal():
     with pytest.raises(ValidationError, match="at least 1 signal"):
         MarketState(
@@ -209,7 +209,7 @@ def test_market_state_requires_at_least_one_signal():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_market_state_source_reliability_bounds():
     with pytest.raises(ValidationError):
         MarketState(
@@ -223,7 +223,7 @@ def test_market_state_source_reliability_bounds():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_compression_result_valid_construction(compression_result):
     assert compression_result.stage == "compression"
     assert compression_result.records_consumed == 28
@@ -232,7 +232,7 @@ def test_compression_result_valid_construction(compression_result):
     assert compression_result.normalization_log == []
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_hypothesis_valid_construction(hypotheses):
     h = hypotheses[0]
     assert isinstance(h.hypothesis_id, UUID)
@@ -243,7 +243,7 @@ def test_hypothesis_valid_construction(hypotheses):
     assert len(h.competing_hypotheses) == 2
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_hypothesis_requires_at_least_one_validation_criterion():
     with pytest.raises(ValidationError, match="at least 1 validation criterion"):
         Hypothesis(
@@ -257,7 +257,7 @@ def test_hypothesis_requires_at_least_one_validation_criterion():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_hypothesis_requires_at_least_one_falsification_criterion():
     with pytest.raises(ValidationError, match="at least 1 falsification criterion"):
         Hypothesis(
@@ -271,7 +271,7 @@ def test_hypothesis_requires_at_least_one_falsification_criterion():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_hypothesis_confidence_bounds():
     with pytest.raises(ValidationError):
         Hypothesis(
@@ -285,14 +285,14 @@ def test_hypothesis_confidence_bounds():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_hypothesis_result_valid_construction(hypothesis_result):
     assert hypothesis_result.stage == "hypothesis"
     assert hypothesis_result.states_analyzed == 4
     assert len(hypothesis_result.hypotheses) == 2
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_scenario_valid_construction(scenarios):
     s = scenarios[0]
     assert isinstance(s.scenario_id, UUID)
@@ -302,7 +302,7 @@ def test_scenario_valid_construction(scenarios):
     assert len(s.assumptions) == 1
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_scenario_probability_bounds():
     with pytest.raises(ValidationError):
         _make_scenario(probability=1.5)
@@ -310,7 +310,7 @@ def test_scenario_probability_bounds():
         _make_scenario(probability=-0.1)
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_simulation_result_requires_at_least_two_scenarios():
     assert MIN_SCENARIOS == 2
     single_scenario = _make_scenario()
@@ -318,7 +318,7 @@ def test_simulation_result_requires_at_least_two_scenarios():
         SimulationResult(scenarios=[single_scenario])
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_simulation_result_valid_construction(simulation_result):
     assert simulation_result.stage == "simulation"
     assert len(simulation_result.scenarios) == 3
@@ -326,7 +326,7 @@ def test_simulation_result_valid_construction(simulation_result):
     assert simulation_result.baseline.name == "baseline (status quo)"
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_simulation_result_exactly_two_scenarios_is_valid():
     s1 = _make_scenario(name="scenario-a")
     s2 = _make_scenario(name="scenario-b")
@@ -334,7 +334,7 @@ def test_simulation_result_exactly_two_scenarios_is_valid():
     assert len(result.scenarios) == 2
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_decision_driver_weight_bounds():
     with pytest.raises(ValidationError):
         DecisionDriver(name="test", weight=1.5, description="Too high")
@@ -342,7 +342,7 @@ def test_decision_driver_weight_bounds():
         DecisionDriver(name="test", weight=-0.1, description="Too low")
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_decision_object_valid_construction(decision_objects):
     d = decision_objects[0]
     assert isinstance(d.decision_id, UUID)
@@ -353,7 +353,7 @@ def test_decision_object_valid_construction(decision_objects):
     assert len(d.drivers) == 1
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_decision_object_confidence_bounds():
     with pytest.raises(ValidationError):
         DecisionObject(
@@ -368,13 +368,13 @@ def test_decision_object_confidence_bounds():
         )
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_decision_result_valid_construction(decision_result):
     assert decision_result.stage == "decision"
     assert len(decision_result.decisions) == 1
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_prediction_vs_reality_valid_construction():
     pvr = PredictionVsReality(
         metric="spread_pct",
@@ -387,7 +387,7 @@ def test_prediction_vs_reality_valid_construction():
     assert pvr.within_confidence is True
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_source_degradation_valid_construction():
     sd = SourceDegradation(
         source_id="src-1",
@@ -399,7 +399,7 @@ def test_source_degradation_valid_construction():
     assert sd.previous_reliability == 0.95
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_scorecard_valid_construction(scorecards):
     sc = scorecards[0]
     assert isinstance(sc.scorecard_id, UUID)
@@ -412,7 +412,7 @@ def test_scorecard_valid_construction(scorecards):
     assert sc.lessons_learned is None
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_feedback_result_valid_construction(feedback_result):
     assert feedback_result.stage == "feedback"
     assert feedback_result.sources_updated == 0
@@ -420,32 +420,32 @@ def test_feedback_result_valid_construction(feedback_result):
     assert len(feedback_result.scorecards) == 1
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_frozen_source_meta_rejects_mutation(source_meta):
     with pytest.raises(ValidationError):
         source_meta.source_id = "changed"
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_frozen_signal_value_rejects_mutation():
     sig = _make_signal()
     with pytest.raises(ValidationError):
         sig.value = 999.0
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_frozen_hypothesis_rejects_mutation(hypotheses):
     with pytest.raises(ValidationError):
         hypotheses[0].status = HypothesisStatus.CONFIRMED
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_frozen_scenario_rejects_mutation(scenarios):
     with pytest.raises(ValidationError):
         scenarios[0].probability = 0.99
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_enum_values_are_strings():
     assert str(SourceType.API) == "api"
     assert str(Granularity.DAILY) == "daily"
@@ -455,7 +455,7 @@ def test_enum_values_are_strings():
     assert str(DecisionType.TRIGGER) == "trigger"
 
 
-@pytest.mark.offline
+@pytest.mark.offline()
 def test_enum_serialise_in_model_dump():
     sm = _make_source_meta()
     dumped = sm.model_dump()

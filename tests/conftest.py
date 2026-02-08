@@ -41,7 +41,7 @@ from universal_gear.core.contracts import (
 
 
 @pytest.fixture(autouse=True)
-def block_network_for_offline(request, monkeypatch):
+def _block_network_for_offline(request, monkeypatch):
     """Block outbound connections in tests marked as offline.
 
     We patch ``socket.create_connection`` instead of ``socket.socket``
@@ -76,12 +76,12 @@ def _source_meta(
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def source_meta() -> SourceMeta:
     return _source_meta()
 
 
-@pytest.fixture
+@pytest.fixture()
 def raw_events() -> list[RawEvent]:
     """20 events with a mix of quality."""
     source = _source_meta()
@@ -108,7 +108,7 @@ def raw_events() -> list[RawEvent]:
     return events
 
 
-@pytest.fixture
+@pytest.fixture()
 def quality_report(source_meta) -> DataQualityReport:
     return DataQualityReport(
         source=source_meta,
@@ -123,12 +123,12 @@ def quality_report(source_meta) -> DataQualityReport:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def collection_result(raw_events, quality_report) -> CollectionResult:
     return CollectionResult(events=raw_events, quality_report=quality_report)
 
 
-@pytest.fixture
+@pytest.fixture()
 def market_states() -> list[MarketState]:
     """4 weeks of market data with increasing prices."""
     states: list[MarketState] = []
@@ -154,7 +154,7 @@ def market_states() -> list[MarketState]:
     return states
 
 
-@pytest.fixture
+@pytest.fixture()
 def compression_result(market_states) -> CompressionResult:
     return CompressionResult(
         states=market_states,
@@ -163,7 +163,7 @@ def compression_result(market_states) -> CompressionResult:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def hypotheses() -> list[Hypothesis]:
     """2 testable hypotheses."""
     now = NOW
@@ -220,12 +220,12 @@ def hypotheses() -> list[Hypothesis]:
     ]
 
 
-@pytest.fixture
+@pytest.fixture()
 def hypothesis_result(hypotheses) -> HypothesisResult:
     return HypothesisResult(hypotheses=hypotheses, states_analyzed=4)
 
 
-@pytest.fixture
+@pytest.fixture()
 def scenarios(hypotheses) -> list[Scenario]:
     """3 scenarios + baseline."""
     source_ids = [h.hypothesis_id for h in hypotheses]
@@ -272,12 +272,12 @@ def scenarios(hypotheses) -> list[Scenario]:
     ]
 
 
-@pytest.fixture
+@pytest.fixture()
 def simulation_result(scenarios) -> SimulationResult:
     return SimulationResult(scenarios=scenarios, baseline=scenarios[0])
 
 
-@pytest.fixture
+@pytest.fixture()
 def decision_objects(scenarios) -> list[DecisionObject]:
     return [
         DecisionObject(
@@ -311,12 +311,12 @@ def decision_objects(scenarios) -> list[DecisionObject]:
     ]
 
 
-@pytest.fixture
+@pytest.fixture()
 def decision_result(decision_objects) -> DecisionResult:
     return DecisionResult(decisions=decision_objects)
 
 
-@pytest.fixture
+@pytest.fixture()
 def scorecards(decision_objects) -> list[Scorecard]:
     return [
         Scorecard(
@@ -335,7 +335,7 @@ def scorecards(decision_objects) -> list[Scorecard]:
     ]
 
 
-@pytest.fixture
+@pytest.fixture()
 def feedback_result(scorecards) -> FeedbackResult:
     return FeedbackResult(
         scorecards=scorecards,

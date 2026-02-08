@@ -26,6 +26,7 @@ RISK_CRITICAL_DEVIATION = 0.5
 RISK_HIGH_DEVIATION = 0.3
 RISK_MEDIUM_DEVIATION = 0.15
 DEFAULT_VOLATILITY = 0.12
+HARVEST_NEUTRAL = 1.0
 
 
 class AgroModelConfig(BaseModel):
@@ -216,7 +217,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
         )
         hv_label = (
             "strong harvest"
-            if harvest > 1.0
-            else "weak harvest" if harvest < 1.0 else "normal harvest"
+            if harvest > HARVEST_NEUTRAL
+            else "weak harvest" if harvest < HARVEST_NEUTRAL else "normal harvest"
         )
         return f"{ex_label} x {hv_label}"

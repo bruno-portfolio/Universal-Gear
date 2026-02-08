@@ -99,7 +99,7 @@ class AgroMonitor(BaseMonitor[AgroConfig]):
         degradations: list[SourceDegradation] = []
 
         try:
-            from agrobr import cepea  # noqa: PLC0415
+            from agrobr import cepea
 
             products = await cepea.produtos()
             if self.config.commodity not in products:

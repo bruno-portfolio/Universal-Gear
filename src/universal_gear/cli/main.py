@@ -29,28 +29,28 @@ def _run_toy_pipeline(
     output: str,
 ) -> None:
     """Build and execute the toy pipeline."""
-    from universal_gear.core.pipeline import Pipeline  # noqa: PLC0415
-    from universal_gear.stages.actions.alert import (  # noqa: PLC0415
+    from universal_gear.core.pipeline import Pipeline
+    from universal_gear.stages.actions.alert import (
         AlertConfig,
         ConditionalAlertEmitter,
     )
-    from universal_gear.stages.analyzers.seasonal import (  # noqa: PLC0415
+    from universal_gear.stages.analyzers.seasonal import (
         SeasonalAnalyzerConfig,
         SeasonalAnomalyDetector,
     )
-    from universal_gear.stages.collectors.synthetic import (  # noqa: PLC0415
+    from universal_gear.stages.collectors.synthetic import (
         SyntheticCollector,
         SyntheticCollectorConfig,
     )
-    from universal_gear.stages.models.conditional import (  # noqa: PLC0415
+    from universal_gear.stages.models.conditional import (
         ConditionalModelConfig,
         ConditionalScenarioEngine,
     )
-    from universal_gear.stages.monitors.backtest import (  # noqa: PLC0415
+    from universal_gear.stages.monitors.backtest import (
         BacktestConfig,
         BacktestMonitor,
     )
-    from universal_gear.stages.processors.aggregator import (  # noqa: PLC0415
+    from universal_gear.stages.processors.aggregator import (
         AggregatorConfig,
         AggregatorProcessor,
     )
@@ -80,17 +80,17 @@ def _run_agro_pipeline(
     output: str,
 ) -> None:
     """Build and execute the agro pipeline with real data from agrobr."""
-    from universal_gear.core.pipeline import Pipeline  # noqa: PLC0415
-    from universal_gear.plugins.agro.action import AgroActionEmitter  # noqa: PLC0415
-    from universal_gear.plugins.agro.analyzer import AgroAnalyzer  # noqa: PLC0415
-    from universal_gear.plugins.agro.collector import AgrobrCollector  # noqa: PLC0415
-    from universal_gear.plugins.agro.config import AgroConfig  # noqa: PLC0415
-    from universal_gear.plugins.agro.model import (  # noqa: PLC0415
+    from universal_gear.core.pipeline import Pipeline
+    from universal_gear.plugins.agro.action import AgroActionEmitter
+    from universal_gear.plugins.agro.analyzer import AgroAnalyzer
+    from universal_gear.plugins.agro.collector import AgrobrCollector
+    from universal_gear.plugins.agro.config import AgroConfig
+    from universal_gear.plugins.agro.model import (
         AgroModelConfig,
         AgroScenarioEngine,
     )
-    from universal_gear.plugins.agro.monitor import AgroMonitor  # noqa: PLC0415
-    from universal_gear.plugins.agro.processor import AgroProcessor  # noqa: PLC0415
+    from universal_gear.plugins.agro.monitor import AgroMonitor
+    from universal_gear.plugins.agro.processor import AgroProcessor
 
     setup_logging(json_output=json_output, level="DEBUG" if verbose else "INFO")
 
@@ -155,19 +155,19 @@ def _emit_result(
     output: str = "terminal",
 ) -> None:
     """Dispatch result rendering based on output format."""
-    from universal_gear.core.pipeline import PipelineResult  # noqa: PLC0415
+    from universal_gear.core.pipeline import PipelineResult
 
     if not isinstance(result, PipelineResult):
         return
 
     if output == "json":
-        from universal_gear.cli.export import export_json  # noqa: PLC0415
+        from universal_gear.cli.export import export_json
 
         print(export_json(result))
         return
 
     if output == "csv":
-        from universal_gear.cli.export import export_csv  # noqa: PLC0415
+        from universal_gear.cli.export import export_csv
 
         print(export_csv(result), end="")
         return
@@ -177,7 +177,7 @@ def _emit_result(
 
 def _render_result(result: object, *, pipeline_name: str = "toy") -> None:
     """Render pipeline result to console using Rich."""
-    from universal_gear.core.pipeline import PipelineResult  # noqa: PLC0415
+    from universal_gear.core.pipeline import PipelineResult
 
     if not isinstance(result, PipelineResult):
         return
@@ -206,8 +206,8 @@ def _render_result(result: object, *, pipeline_name: str = "toy") -> None:
     console.print(panel)
 
 
-def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
-    from universal_gear.core.pipeline import PipelineResult  # noqa: PLC0415
+def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911
+    from universal_gear.core.pipeline import PipelineResult
 
     if not isinstance(result, PipelineResult):
         return ""
@@ -243,7 +243,7 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
                 return f"{n} decisions | {', '.join(types)}"
         case "feedback":
             if result.feedback:
-                from universal_gear.stages.monitors.scorecard import (  # noqa: PLC0415
+                from universal_gear.stages.monitors.scorecard import (
                     summary as sc_summary,
                 )
 
@@ -351,23 +351,23 @@ def scorecard(
 
 def _ensure_plugins_loaded() -> None:
     """Import stage modules so their @register decorators fire."""
-    import universal_gear.plugins.agro.action  # noqa: PLC0415
-    import universal_gear.plugins.agro.analyzer  # noqa: PLC0415
-    import universal_gear.plugins.agro.collector  # noqa: PLC0415
-    import universal_gear.plugins.agro.model  # noqa: PLC0415
-    import universal_gear.plugins.agro.monitor  # noqa: PLC0415
-    import universal_gear.plugins.agro.processor  # noqa: PLC0415
-    import universal_gear.stages.actions.alert  # noqa: PLC0415
-    import universal_gear.stages.analyzers.seasonal  # noqa: PLC0415
-    import universal_gear.stages.analyzers.zscore  # noqa: PLC0415
-    import universal_gear.stages.collectors.synthetic  # noqa: PLC0415
-    import universal_gear.stages.models.conditional  # noqa: PLC0415
-    import universal_gear.stages.models.montecarlo  # noqa: PLC0415
-    import universal_gear.stages.monitors.backtest  # noqa: PLC0415
-    import universal_gear.plugins.finance.action  # noqa: PLC0415
-    import universal_gear.plugins.finance.analyzer  # noqa: PLC0415
-    import universal_gear.plugins.finance.collector  # noqa: PLC0415
-    import universal_gear.plugins.finance.model  # noqa: PLC0415
-    import universal_gear.plugins.finance.monitor  # noqa: PLC0415
-    import universal_gear.plugins.finance.processor  # noqa: PLC0415
-    import universal_gear.stages.processors.aggregator  # noqa: PLC0415, F401
+    import universal_gear.plugins.agro.action
+    import universal_gear.plugins.agro.analyzer
+    import universal_gear.plugins.agro.collector
+    import universal_gear.plugins.agro.model
+    import universal_gear.plugins.agro.monitor
+    import universal_gear.plugins.agro.processor
+    import universal_gear.plugins.finance.action
+    import universal_gear.plugins.finance.analyzer
+    import universal_gear.plugins.finance.collector
+    import universal_gear.plugins.finance.model
+    import universal_gear.plugins.finance.monitor
+    import universal_gear.plugins.finance.processor
+    import universal_gear.stages.actions.alert
+    import universal_gear.stages.analyzers.seasonal
+    import universal_gear.stages.analyzers.zscore
+    import universal_gear.stages.collectors.synthetic
+    import universal_gear.stages.models.conditional
+    import universal_gear.stages.models.montecarlo
+    import universal_gear.stages.monitors.backtest
+    import universal_gear.stages.processors.aggregator  # noqa: F401

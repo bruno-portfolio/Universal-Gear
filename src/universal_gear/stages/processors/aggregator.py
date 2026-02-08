@@ -98,7 +98,7 @@ class AggregatorProcessor(BaseProcessor[AggregatorConfig]):
             signal_values: dict[str, list[float]] = defaultdict(list)
             for _, norm_data in items:
                 for key, value in norm_data.items():
-                    if isinstance(value, (int, float)):
+                    if isinstance(value, int | float):
                         signal_values[key].append(float(value))
 
             signals = self._compute_signals(signal_values)

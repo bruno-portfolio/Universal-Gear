@@ -118,35 +118,35 @@ def _make_hypothesis_result(n: int = 1) -> HypothesisResult:
 
 
 class TestAgroConfig:
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_default_commodity(self):
         cfg = AgroConfig()
         assert cfg.commodity == "soja"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_default_currency(self):
         cfg = AgroConfig()
         assert cfg.currency == "BRL"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_default_region_is_none(self):
         cfg = AgroConfig()
         assert cfg.region is None
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_saca_60kg_to_ton_constant(self):
         expected = 1000 / 60
         assert pytest.approx(expected) == SACA_60KG_TO_TON
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_commodity_units_soja(self):
         assert COMMODITY_UNITS["soja"] == "BRL/sc60kg"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_commodity_canonical_unit_soja(self):
         assert COMMODITY_CANONICAL_UNIT["soja"] == "BRL/ton"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_commodity_units_all_present(self):
         for key in COMMODITY_CANONICAL_UNIT:
             assert key in COMMODITY_UNITS
@@ -156,7 +156,7 @@ class TestAgroAnalyzer:
     def _make_analyzer(self, **kwargs) -> AgroAnalyzer:
         return AgroAnalyzer(config=AgroConfig(**kwargs))
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_returns_empty_when_insufficient_data(self):
         """With fewer than MIN_STATES_FOR_ANALYSIS states, analyze returns no hypotheses."""
         analyzer = self._make_analyzer()
@@ -166,7 +166,7 @@ class TestAgroAnalyzer:
         result = await analyzer.analyze(compression)
         assert result.hypotheses == []
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_returns_empty_when_std_zero(self):
         """All identical prices produce std==0, so no seasonal deviation is flagged."""
         analyzer = self._make_analyzer()
@@ -178,7 +178,7 @@ class TestAgroAnalyzer:
         ]
         assert seasonal == []
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_check_seasonal_price_detects_high_deviation(self):
         """A large spike in the last price should exceed SEASONAL_DEVIATION_THRESHOLD."""
         analyzer = self._make_analyzer()
@@ -190,7 +190,7 @@ class TestAgroAnalyzer:
         assert len(seasonal) == 1
         assert "above seasonal mean" in seasonal[0].statement
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_check_price_trend_rising(self):
         """Consistently rising prices over last 3 periods should be detected."""
         analyzer = self._make_analyzer()
@@ -201,7 +201,7 @@ class TestAgroAnalyzer:
         trend = [h for h in result.hypotheses if "rising" in h.statement.lower()]
         assert len(trend) == 1
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_check_price_trend_falling(self):
         """Consistently falling prices over last 3 periods should be detected."""
         analyzer = self._make_analyzer()
@@ -217,7 +217,7 @@ class TestAgroScenarioEngine:
     def _make_engine(self, **kwargs) -> AgroScenarioEngine:
         return AgroScenarioEngine(config=AgroModelConfig(**kwargs))
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_model_config_defaults(self):
         cfg = AgroModelConfig()
         assert cfg.exchange_rates == [5.0, 5.5, 6.0]
@@ -225,7 +225,7 @@ class TestAgroScenarioEngine:
         assert cfg.export_premium_pct == [0.0, 3.0, 6.0]
         assert cfg.base_price_brl == 130.0
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_generates_27_scenarios_plus_baseline(self):
         engine = self._make_engine()
         hr = _make_hypothesis_result(1)
@@ -236,7 +236,7 @@ class TestAgroScenarioEngine:
         assert result.baseline is not None
         assert result.baseline.name == "baseline (status quo)"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_baseline_uses_median_values(self):
         engine = self._make_engine()
         hr = _make_hypothesis_result(1)
@@ -249,7 +249,7 @@ class TestAgroScenarioEngine:
         assert assumptions["harvest_multiplier"] == pytest.approx(1.0)
         assert assumptions["export_premium_pct"] == pytest.approx(3.0)
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_project_price_linear_combination(self):
         engine = self._make_engine(base_price_brl=100.0)
         price_base = engine._project_price(5.5, 1.0, 0.0)
@@ -267,31 +267,31 @@ class TestAgroScenarioEngine:
         expected_prem = 100.0 * (1 + 0.06)
         assert price_premium == pytest.approx(expected_prem)
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_risk_critical(self):
         engine = self._make_engine(base_price_brl=100.0)
         assert engine._assess_risk(151.0) == RiskLevel.CRITICAL
         assert engine._assess_risk(49.0) == RiskLevel.CRITICAL
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_risk_high(self):
         engine = self._make_engine(base_price_brl=100.0)
         assert engine._assess_risk(135.0) == RiskLevel.HIGH
         assert engine._assess_risk(65.0) == RiskLevel.HIGH
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_risk_medium(self):
         engine = self._make_engine(base_price_brl=100.0)
         assert engine._assess_risk(120.0) == RiskLevel.MEDIUM
         assert engine._assess_risk(80.0) == RiskLevel.MEDIUM
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_risk_low(self):
         engine = self._make_engine(base_price_brl=100.0)
         assert engine._assess_risk(110.0) == RiskLevel.LOW
         assert engine._assess_risk(90.0) == RiskLevel.LOW
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_accepts_agro_config_as_fallback(self):
         """When constructed with AgroConfig, engine internally uses AgroModelConfig defaults."""
         engine = AgroScenarioEngine(config=AgroConfig())
@@ -350,7 +350,7 @@ class TestAgroActionEmitter:
 
         return SimulationResult(scenarios=scenarios, baseline=baseline)
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_filter_upside_selects_above_threshold(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -365,7 +365,7 @@ class TestAgroActionEmitter:
         assert len(upside) == 1
         assert upside[0].name == "big-up"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_filter_downside_selects_below_threshold_with_risk(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -381,7 +381,7 @@ class TestAgroActionEmitter:
         assert len(downside) == 1
         assert downside[0].name == "big-down"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_build_hold_recommendation_when_no_signals(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -398,11 +398,11 @@ class TestAgroActionEmitter:
         assert dec.decision_type == DecisionType.REPORT
         assert "No actionable signal" in dec.title
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_margin_alert_threshold_constant(self):
         assert MARGIN_ALERT_THRESHOLD_PCT == 5.0
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_min_probability_constant(self):
         assert MIN_PROBABILITY == 0.3
 
@@ -444,7 +444,7 @@ class TestAgroMonitor:
             source_scenarios=[source_id],
         )
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_evaluate_decision_produces_scorecard(self):
         monitor = self._make_monitor()
         dec = self._make_decision_object()
@@ -455,7 +455,7 @@ class TestAgroMonitor:
         assert len(scorecard.predictions_vs_reality) > 0
         assert scorecard.predictions_vs_reality[0].metric == "spread_pct"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_evaluate_decision_without_conditions_uses_confidence(self):
         monitor = self._make_monitor()
         dec = self._make_decision_object(conditions=[])
@@ -464,7 +464,7 @@ class TestAgroMonitor:
 
         assert scorecard.predictions_vs_reality[0].metric == "confidence"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_outcome_beneficial(self):
         monitor = self._make_monitor()
         predictions = [
@@ -479,7 +479,7 @@ class TestAgroMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "beneficial"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_outcome_detrimental(self):
         monitor = self._make_monitor()
         predictions = [
@@ -494,7 +494,7 @@ class TestAgroMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "detrimental"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_outcome_neutral(self):
         monitor = self._make_monitor()
         predictions = [
@@ -509,7 +509,7 @@ class TestAgroMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "neutral"
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_assess_outcome_empty_predictions(self):
         monitor = self._make_monitor()
         assert monitor._assess_outcome([]) == "neutral"

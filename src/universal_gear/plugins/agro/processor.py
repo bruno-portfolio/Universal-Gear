@@ -54,7 +54,7 @@ class AgroProcessor(BaseProcessor[AgroConfig]):
         valor = data.get("valor")
         unidade = data.get("unidade", "")
 
-        if valor is not None and isinstance(valor, (int, float)):
+        if valor is not None and isinstance(valor, int | float):
             valor, unidade = self._convert_unit(float(valor), str(unidade))
             data["valor"] = valor
             data["unidade"] = unidade
@@ -99,7 +99,7 @@ class AgroProcessor(BaseProcessor[AgroConfig]):
             prices = [
                 float(n["valor"])
                 for _, n in items
-                if n.get("valor") is not None and isinstance(n["valor"], (int, float))
+                if n.get("valor") is not None and isinstance(n["valor"], int | float)
             ]
 
             if not prices:
@@ -118,7 +118,7 @@ class AgroProcessor(BaseProcessor[AgroConfig]):
             production_values = [
                 float(n["producao"])
                 for _, n in items
-                if n.get("producao") is not None and isinstance(n.get("producao"), (int, float))
+                if n.get("producao") is not None and isinstance(n.get("producao"), int | float)
             ]
             if production_values:
                 signals.append(
