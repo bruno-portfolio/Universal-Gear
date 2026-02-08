@@ -1,6 +1,6 @@
 # Universal Gear — Manifesto
 
-*[Leia em Ingles](MANIFESTO.md)*
+*[Leia em Inglês](MANIFESTO.md)*
 
 ---
 
@@ -80,14 +80,14 @@ Menos acesso, não mais. Toda permissão é opt-in. Na dúvida, negue.
 
 ---
 
-## Acessibilidade como Principio
+## Acessibilidade como Princípio
 
-Raciocinio estruturado nao e privilegio de quem programa.
-O framework existe em multiplas camadas -- codigo, planilhas, conteudo -- pra que
-qualquer pessoa possa decidir melhor com as ferramentas que ja tem.
+Raciocínio estruturado não é privilégio de quem programa.
+O framework existe em múltiplas camadas -- código, planilhas, conteúdo -- pra que
+qualquer pessoa possa decidir melhor com as ferramentas que já tem.
 
-A engrenagem gira pra traders e pra donos de pequeno negocio. Pra analistas com
-Python e pra gente com um navegador. Cada camada baixa a barreira sem baixar o padrao.
+A engrenagem gira pra traders e pra donos de pequeno negócio. Pra analistas com
+Python e pra gente com um navegador. Cada camada baixa a barreira sem baixar o padrão.
 
 ---
 

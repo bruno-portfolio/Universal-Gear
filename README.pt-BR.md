@@ -8,22 +8,22 @@
 [![License](https://img.shields.io/github/license/bruno-portfolio/Universal-Gear)](LICENSE)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-Toda semana voce toma decisoes com dados incompletos.
-O Universal Gear estrutura esse processo -- pra voce decidir melhor, explicar o porque, e aprender com os erros.
+Toda semana você toma decisões com dados incompletos.
+O Universal Gear estrutura esse processo -- pra você decidir melhor, explicar o porquê, e aprender com os erros.
 
 ## O Que Ele Faz?
 
-O Universal Gear roda um loop de decisao em seis estagios sobre dados reais de mercado e devolve resultados estruturados e auditaveis.
+O Universal Gear roda um loop de decisão em seis estágios sobre dados reais de mercado e devolve resultados estruturados e auditáveis.
 
-**Trader de commodities** -- "Soja caiu tres semanas seguidas. E sazonal ou tendencia? Devo fazer hedge?"
-Rode `ugear run agro` com dados reais do agronegocio brasileiro. O pipeline detecta anomalias, simula cenarios e indica se o sinal vale uma acao.
+**Trader de commodities** -- "Soja caiu três semanas seguidas. É sazonal ou tendência? Devo fazer hedge?"
+Rode `ugear run agro` com dados reais do agronegócio brasileiro. O pipeline detecta anomalias, simula cenários e indica se o sinal vale uma ação.
 
-**Analista financeiro** -- "USD/BRL disparou de um dia pro outro. Ruido ou mudanca de regime?"
-Rode `ugear run finance` com dados do Banco Central. Mesmos seis estagios, dominio diferente -- observacao, compressao, hipotese, simulacao, decisao, feedback.
+**Analista financeiro** -- "USD/BRL disparou de um dia pro outro. Ruído ou mudança de regime?"
+Rode `ugear run finance` com dados do Banco Central. Mesmos seis estágios, domínio diferente -- observação, compressão, hipótese, simulação, decisão, feedback.
 
-**Qualquer pessoa com decisoes recorrentes** -- Voce nao precisa ser trader. Qualquer decisao que voce toma repetidamente sob incerteza (compras, precificacao, estoque) se encaixa nesse loop. O framework te obriga a mostrar o trabalho: o que voce observou, o que assumiu, o que decidiu e se deu certo.
+**Qualquer pessoa com decisões recorrentes** -- Você não precisa ser trader. Qualquer decisão que você toma repetidamente sob incerteza (compras, precificação, estoque) se encaixa nesse loop. O framework te obriga a mostrar o trabalho: o que você observou, o que assumiu, o que decidiu e se deu certo.
 
-## Os Seis Estagios
+## Os Seis Estágios
 
 Todo pipeline segue o mesmo loop:
 
@@ -33,27 +33,27 @@ Todo pipeline segue o mesmo loop:
       +----------------------------------------------------------------+
 ```
 
-| Estagio | O que responde |
+| Estágio | O que responde |
 |---------|----------------|
-| **Observar** | O que esta acontecendo no mercado agora? |
-| **Comprimir** | Qual e o padrao das ultimas semanas? |
-| **Hipotetizar** | Isso e normal ou fora do comum? |
+| **Observar** | O que está acontecendo no mercado agora? |
+| **Comprimir** | Qual é o padrão das últimas semanas? |
+| **Hipotetizar** | Isso é normal ou fora do comum? |
 | **Simular** | Se continuar assim, o que pode acontecer? |
 | **Decidir** | O que eu deveria fazer? |
-| **Feedback** | Minha ultima decisao funcionou? |
+| **Feedback** | Minha última decisão funcionou? |
 
-Nenhum estagio finge ser perfeito. Cada um carrega suas limitacoes adiante, pra voce sempre saber com o que esta trabalhando.
+Nenhum estágio finge ser perfeito. Cada um carrega suas limitações adiante, pra você sempre saber com o que está trabalhando.
 
 ## Instalar e Rodar
 
 ```bash
 pip install universal-gear
-ugear run toy          # teste agora -- offline, sem configuracao
-ugear run agro         # dados reais de preco de soja do Brasil
-ugear run finance      # taxas de cambio USD/BRL do BCB
+ugear run toy          # teste agora -- offline, sem configuração
+ugear run agro         # dados reais de preço de soja do Brasil
+ugear run finance      # taxas de câmbio USD/BRL do BCB
 ```
 
-A saida fica assim:
+A saída fica assim:
 
 ```
 ┌──────── Universal Gear - agro pipeline ───────┐
@@ -66,43 +66,43 @@ A saida fica assim:
 └────── SUCCESS - total: 0.0s ──────────────────┘
 ```
 
-Cada estagio reporta o que fez e quanto tempo levou. Se algo falhar, falha alto -- sem erros silenciosos.
+Cada estágio reporta o que fez e quanto tempo levou. Se algo falhar, falha alto -- sem erros silenciosos.
 
-## Pra Quem E
+## Pra Quem É
 
-- **Analistas e traders de commodities** -- Inteligencia de mercado estruturada para produtos agricolas, com dados reais de fontes brasileiras.
-- **Analistas financeiros e macro** -- Pipelines de decisao para cambio, juros e indicadores macroeconomicos.
+- **Analistas e traders de commodities** -- Inteligência de mercado estruturada para produtos agrícolas, com dados reais de fontes brasileiras.
+- **Analistas financeiros e macro** -- Pipelines de decisão para câmbio, juros e indicadores macroeconômicos.
 - **Times de business intelligence** -- Exporte resultados em JSON e importe no Power BI, Tableau ou qualquer ferramenta de BI.
-- **Qualquer pessoa que toma decisoes recorrentes sob incerteza** -- Compras, precificacao, estoque, logistica -- qualquer dominio onde voce decide regularmente com informacao imperfeita.
-- **Desenvolvedores construindo pipelines de decisao** -- Troque qualquer estagio, adicione novas fontes de dados ou crie um plugin de dominio inteiramente novo.
+- **Qualquer pessoa que toma decisões recorrentes sob incerteza** -- Compras, precificação, estoque, logística -- qualquer domínio onde você decide regularmente com informação imperfeita.
+- **Desenvolvedores construindo pipelines de decisão** -- Troque qualquer estágio, adicione novas fontes de dados ou crie um plugin de domínio inteiramente novo.
 
 ## Exportar para Ferramentas de BI
 
-Use `--output json` pra obter saida estruturada que alimenta dashboards e relatorios:
+Use `--output json` pra obter saída estruturada que alimenta dashboards e relatórios:
 
 ```bash
 ugear run agro --output json
 ```
 
-A saida e JSON estruturado que pode ser importado diretamente no Power BI, Tableau, Metabase ou qualquer ferramenta que consome dados em JSON. CSV tambem disponivel via `--output csv`.
+A saída é JSON estruturado que pode ser importado diretamente no Power BI, Tableau, Metabase ou qualquer ferramenta que consome dados em JSON. CSV também disponível via `--output csv`.
 
-## Nao Programa? Comece Aqui
+## Não Programa? Comece Aqui
 
-Voce nao precisa saber programar. O Universal Gear inclui uma planilha que te guia pelo mesmo processo de decisao, passo a passo.
+Você não precisa saber programar. O Universal Gear inclui uma planilha que te guia pelo mesmo processo de decisão, passo a passo.
 
-**O que voce recebe:** Um arquivo Excel com sete abas. Cada aba e um passo do processo. Cada aba tem instrucoes no topo dizendo exatamente o que fazer. As celulas verdes sao pra voce preencher. Tem um exemplo completo ja preenchido (compra de cafe pro escritorio) pra voce ver como um ciclo pronto fica antes de comecar o seu.
+**O que você recebe:** Um arquivo Excel com sete abas. Cada aba é um passo do processo. Cada aba tem instruções no topo dizendo exatamente o que fazer. As células verdes são pra você preencher. Tem um exemplo completo já preenchido (compra de café pro escritório) pra você ver como um ciclo pronto fica antes de começar o seu.
 
 Os sete passos:
 
-| Aba | O que voce faz |
+| Aba | O que você faz |
 |-----|----------------|
-| **OBSERVAR** | Anote o que voce viu: precos, quantidades, noticias. Uma linha por observacao. |
-| **COMPRIMIR** | Resuma: qual a media? Esta subindo ou descendo? Quanto variou? |
-| **HIPOTESE** | Escreva o que voce acha que esta acontecendo -- e o que provaria que esta errado. |
-| **SIMULAR** | Imagine pelo menos dois futuros: um onde da certo e um onde da errado. |
-| **DECIDIR** | Tome sua decisao. Qual sua confianca? O que acontece se voce errar? |
-| **FEEDBACK** | Depois que o tempo passou: o que realmente aconteceu? Voce acertou? O que aprendeu? |
-| **DASHBOARD** | Seu placar ao longo do tempo. Quantas decisoes voce acertou? |
+| **OBSERVAR** | Anote o que você viu: preços, quantidades, notícias. Uma linha por observação. |
+| **COMPRIMIR** | Resuma: qual a média? Está subindo ou descendo? Quanto variou? |
+| **HIPÓTESE** | Escreva o que você acha que está acontecendo -- e o que provaria que está errado. |
+| **SIMULAR** | Imagine pelo menos dois futuros: um onde dá certo e um onde dá errado. |
+| **DECIDIR** | Tome sua decisão. Qual sua confiança? O que acontece se você errar? |
+| **FEEDBACK** | Depois que o tempo passou: o que realmente aconteceu? Você acertou? O que aprendeu? |
+| **DASHBOARD** | Seu placar ao longo do tempo. Quantas decisões você acertou? |
 
 Pra gerar a planilha:
 
@@ -113,17 +113,17 @@ ugear template
 
 Isso cria `ugear-decisao.xlsx`. Abra no Excel ou Google Sheets e comece a preencher.
 
-Quando quiser experimentar a versao em codigo, exporte a planilha pra um formato que o programa entende:
+Quando quiser experimentar a versão em código, exporte a planilha pra um formato que o programa entende:
 
 ```bash
 ugear import-sheet minhas-decisoes.xlsx
 ```
 
-## Crie Seu Proprio Plugin
+## Crie Seu Próprio Plugin
 
-O Universal Gear e agnóstico de dominio no seu nucleo. Os pipelines `toy` e `agro` sao plugins -- e voce pode criar o seu pra qualquer dominio.
+O Universal Gear é agnóstico de domínio no seu núcleo. Os pipelines `toy` e `agro` são plugins -- e você pode criar o seu pra qualquer domínio.
 
-Registre um coletor, processador, analisador ou qualquer outro estagio com um unico decorator:
+Registre um coletor, processador, analisador ou qualquer outro estágio com um único decorator:
 
 ```python
 from universal_gear.core.registry import register_collector
@@ -138,25 +138,25 @@ Guia completo: [docs/plugins.md](docs/plugins.md)
 
 ## Roadmap
 
-O Universal Gear cresce em camadas -- cada uma torna o framework acessivel pra mais pessoas:
+O Universal Gear cresce em camadas -- cada uma torna o framework acessível pra mais pessoas:
 
-- ~~**Output do CLI**~~ -- Paineis de decisao, historico de acertos, exportacao JSON/CSV
-- ~~**Scaffold de plugins**~~ -- `ugear new-plugin` e `ugear check-plugin` pra criar dominios
-- ~~**Planilha template**~~ -- `ugear template` gera xlsx guiado pra nao-programadores
-- **Conteudo e tutoriais** -- Artigos explicando a metodologia em linguagem acessivel
-- **Interface web** -- Webapp minima pra pipelines de decisao pelo navegador
+- ~~**Output do CLI**~~ -- Painéis de decisão, histórico de acertos, exportação JSON/CSV
+- ~~**Scaffold de plugins**~~ -- `ugear new-plugin` e `ugear check-plugin` pra criar domínios
+- ~~**Planilha template**~~ -- `ugear template` gera xlsx guiado pra não-programadores
+- **Conteúdo e tutoriais** -- Artigos explicando a metodologia em linguagem acessível
+- **Interface web** -- Webapp mínima pra pipelines de decisão pelo navegador
 
-Veja o [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) pra entender a filosofia por tras de cada camada.
+Veja o [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) pra entender a filosofia por trás de cada camada.
 
-## Documentacao
+## Documentação
 
-- [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) -- Filosofia de design: por que cada estagio reconhece seus limites
-- [docs/quickstart.md](docs/quickstart.md) -- Comecando em cinco minutos
+- [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) -- Filosofia de design: por que cada estágio reconhece seus limites
+- [docs/quickstart.md](docs/quickstart.md) -- Começando em cinco minutos
 - [docs/architecture.md](docs/architecture.md) -- Arquitetura do sistema e contratos
 - [docs/plugins.md](docs/plugins.md) -- Construindo plugins customizados
 - [docs/tutorial-first-plugin.md](docs/tutorial-first-plugin.md) -- Passo a passo: seu primeiro plugin
-- [docs/cli.md](docs/cli.md) -- Referencia completa do CLI
+- [docs/cli.md](docs/cli.md) -- Referência completa do CLI
 
-## Licenca
+## Licença
 
 MIT -- feito no Brasil, pensado pro mundo.
