@@ -2,9 +2,10 @@
 
 *[Leia em Portugues](README.pt-BR.md)*
 
-[![Tests](https://img.shields.io/badge/tests-118%20passing-brightgreen)](.)
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](.)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![CI](https://github.com/bruno-portfolio/Universal-Gear/actions/workflows/ci.yml/badge.svg)](https://github.com/bruno-portfolio/Universal-Gear/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/universal-gear)](https://pypi.org/project/universal-gear/)
+[![Python](https://img.shields.io/pypi/pyversions/universal-gear)](https://pypi.org/project/universal-gear/)
+[![License](https://img.shields.io/github/license/bruno-portfolio/Universal-Gear)](LICENSE)
 
 **Open-source Python decision framework for market intelligence under uncertainty.**
 
