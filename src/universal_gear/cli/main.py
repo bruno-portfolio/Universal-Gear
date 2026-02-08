@@ -140,7 +140,7 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
             if result.collection:
                 n = len(result.collection.events)
                 rel = result.collection.quality_report.reliability_score
-                return f"{n} events │ reliability: {rel:.2f}"
+                return f"{n} events | reliability: {rel:.2f}"
         case "compression":
             if result.compression:
                 n = len(result.compression.states)
@@ -149,7 +149,7 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
                     if result.compression.states
                     else "?"
                 )
-                return f"{n} states │ {gran}"
+                return f"{n} states | {gran}"
         case "hypothesis":
             if result.hypothesis:
                 n = len(result.hypothesis.hypotheses)
@@ -163,7 +163,7 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
             if result.decision:
                 n = len(result.decision.decisions)
                 types = {d.decision_type.value for d in result.decision.decisions}
-                return f"{n} decisions │ {', '.join(types)}"
+                return f"{n} decisions | {', '.join(types)}"
         case "feedback":
             if result.feedback:
                 from universal_gear.stages.monitors.scorecard import (  # noqa: PLC0415
@@ -173,7 +173,7 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
                 n = len(result.feedback.scorecards)
                 metrics = sc_summary(result.feedback)
                 hr = metrics["hit_rate"]
-                return f"{n} scorecards │ hit_rate: {hr:.2f}"
+                return f"{n} scorecards | hit_rate: {hr:.2f}"
     return ""
 
 

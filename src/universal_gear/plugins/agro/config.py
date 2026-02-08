@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
+from datetime import date, timedelta
+
 from pydantic import BaseModel, Field
+
+
+def _days_ago(n: int) -> str:
+    return (date.today() - timedelta(days=n)).isoformat()
+
+
+def _today() -> str:
+    return date.today().isoformat()
 
 
 class AgroConfig(BaseModel):
@@ -10,8 +20,8 @@ class AgroConfig(BaseModel):
 
     commodity: str = "soja"
     region: str | None = None
-    date_start: str = "2025-01-01"
-    date_end: str = "2025-12-31"
+    date_start: str = Field(default_factory=lambda: _days_ago(90))
+    date_end: str = Field(default_factory=lambda: _today())
     sources: list[str] = Field(default_factory=lambda: ["cepea"])
     currency: str = "BRL"
     granularity: str = "weekly"
