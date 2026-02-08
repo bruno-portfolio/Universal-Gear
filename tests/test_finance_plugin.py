@@ -164,13 +164,14 @@ class TestFinanceAnalyzer:
         return FinanceAnalyzer(config=FinanceConfig(**kwargs))
 
     @pytest.mark.offline
-    async def test_returns_empty_when_insufficient_data(self):
+    async def test_returns_null_hypothesis_when_insufficient_data(self):
         analyzer = self._make_analyzer()
         compression = _make_compression([5.5, 5.6])
         assert len(compression.states) < MIN_STATES_FOR_ANALYSIS
 
         result = await analyzer.analyze(compression)
-        assert result.hypotheses == []
+        assert len(result.hypotheses) == 1
+        assert "within normal range" in result.hypotheses[0].statement
 
     @pytest.mark.offline
     async def test_returns_empty_when_std_zero(self):

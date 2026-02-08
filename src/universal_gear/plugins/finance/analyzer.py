@@ -37,9 +37,49 @@ class FinanceAnalyzer(BaseAnalyzer[FinanceConfig]):
             hypotheses.extend(self._check_trend(compression.states))
             hypotheses.extend(self._check_volatility_spike(compression.states))
 
+        if not hypotheses:
+            hypotheses.append(self._null_hypothesis(compression.states))
+
         return HypothesisResult(
             hypotheses=hypotheses,
             states_analyzed=len(compression.states),
+        )
+
+    def _null_hypothesis(self, states: list[MarketState]) -> Hypothesis:
+        """Generate a null hypothesis when no anomalies are detected."""
+        now = datetime.now(UTC)
+        source_ids = [s.state_id for s in states[-TREND_PERIODS:]] if states else []
+        rates = _extract_signal(states, "exchange_rate")
+        summary = f"{rates[-1]:.4f}" if rates else "N/A"
+
+        return Hypothesis(
+            statement=f"USD/BRL within normal range ({summary})",
+            rationale=(
+                f"No anomalies, trends, or volatility spikes detected "
+                f"across {len(states)} weekly states. "
+                f"Market conditions are within historical parameters."
+            ),
+            status=HypothesisStatus.PENDING,
+            confidence=0.8,
+            valid_until=now + timedelta(days=14),
+            validation_criteria=[
+                ValidationCriterion(
+                    metric="exchange_rate_zscore",
+                    operator="between",
+                    threshold=(-ZSCORE_ANOMALY_THRESHOLD, ZSCORE_ANOMALY_THRESHOLD),
+                    description="Exchange rate remains within normal range",
+                ),
+            ],
+            falsification_criteria=[
+                ValidationCriterion(
+                    metric="exchange_rate_zscore",
+                    operator="gt",
+                    threshold=ZSCORE_ANOMALY_THRESHOLD,
+                    description="Exchange rate breaks out of normal range",
+                ),
+            ],
+            competing_hypotheses=["calm_before_storm", "structural_stability"],
+            source_states=source_ids,
         )
 
     def _check_exchange_anomaly(self, states: list[MarketState]) -> list[Hypothesis]:

@@ -35,9 +35,51 @@ class AgroAnalyzer(BaseAnalyzer[AgroConfig]):
             hypotheses.extend(self._check_seasonal_price(compression.states))
             hypotheses.extend(self._check_price_trend(compression.states))
 
+        if not hypotheses:
+            hypotheses.append(self._null_hypothesis(compression.states))
+
         return HypothesisResult(
             hypotheses=hypotheses,
             states_analyzed=len(compression.states),
+        )
+
+    def _null_hypothesis(self, states: list[MarketState]) -> Hypothesis:
+        """Generate a null hypothesis when no anomalies are detected."""
+        now = datetime.now(UTC)
+        source_ids = [s.state_id for s in states[-3:]] if states else []
+        prices = _extract_signal(states, "price")
+        summary = f"{prices[-1]:.2f}" if prices else "N/A"
+
+        return Hypothesis(
+            statement=(
+                f"{self.config.commodity.title()} price within normal range ({summary})"
+            ),
+            rationale=(
+                f"No seasonal deviations or persistent trends detected "
+                f"across {len(states)} weekly states. "
+                f"Market conditions are within historical parameters."
+            ),
+            status=HypothesisStatus.PENDING,
+            confidence=0.8,
+            valid_until=now + timedelta(days=14),
+            validation_criteria=[
+                ValidationCriterion(
+                    metric="price_deviation_std",
+                    operator="between",
+                    threshold=(-SEASONAL_DEVIATION_THRESHOLD, SEASONAL_DEVIATION_THRESHOLD),
+                    description="Price remains within seasonal norms",
+                ),
+            ],
+            falsification_criteria=[
+                ValidationCriterion(
+                    metric="price_deviation_std",
+                    operator="gt",
+                    threshold=SEASONAL_DEVIATION_THRESHOLD,
+                    description="Price breaks out of seasonal range",
+                ),
+            ],
+            competing_hypotheses=["delayed_reaction", "new_equilibrium"],
+            source_states=source_ids,
         )
 
     def _check_seasonal_price(self, states: list[MarketState]) -> list[Hypothesis]:

@@ -157,14 +157,15 @@ class TestAgroAnalyzer:
         return AgroAnalyzer(config=AgroConfig(**kwargs))
 
     @pytest.mark.offline
-    async def test_returns_empty_when_insufficient_data(self):
-        """With fewer than MIN_STATES_FOR_ANALYSIS states, analyze returns no hypotheses."""
+    async def test_returns_null_hypothesis_when_insufficient_data(self):
+        """With fewer than MIN_STATES_FOR_ANALYSIS states, analyze returns only a null hypothesis."""
         analyzer = self._make_analyzer()
         compression = _make_compression([100.0, 101.0])
         assert len(compression.states) < MIN_STATES_FOR_ANALYSIS
 
         result = await analyzer.analyze(compression)
-        assert result.hypotheses == []
+        assert len(result.hypotheses) == 1
+        assert "within normal range" in result.hypotheses[0].statement
 
     @pytest.mark.offline
     async def test_returns_empty_when_std_zero(self):
