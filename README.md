@@ -6,6 +6,7 @@
 [![PyPI](https://img.shields.io/pypi/v/universal-gear)](https://pypi.org/project/universal-gear/)
 [![Python](https://img.shields.io/pypi/pyversions/universal-gear)](https://pypi.org/project/universal-gear/)
 [![License](https://img.shields.io/github/license/bruno-portfolio/Universal-Gear)](LICENSE)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 Every week you make decisions based on incomplete data.
 Universal Gear structures that process -- so you can decide better, explain why, and learn from mistakes.
