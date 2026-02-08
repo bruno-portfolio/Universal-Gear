@@ -32,15 +32,9 @@ HARVEST_NEUTRAL = 1.0
 class AgroModelConfig(BaseModel):
     """Configuration for agro scenario generation."""
 
-    exchange_rates: list[float] = Field(
-        default_factory=lambda: [5.0, 5.5, 6.0]
-    )
-    harvest_multipliers: list[float] = Field(
-        default_factory=lambda: [0.85, 1.0, 1.15]
-    )
-    export_premium_pct: list[float] = Field(
-        default_factory=lambda: [0.0, 3.0, 6.0]
-    )
+    exchange_rates: list[float] = Field(default_factory=lambda: [5.0, 5.5, 6.0])
+    harvest_multipliers: list[float] = Field(default_factory=lambda: [0.85, 1.0, 1.15])
+    export_premium_pct: list[float] = Field(default_factory=lambda: [0.0, 3.0, 6.0])
     base_price_brl: float = 130.0
     volatility: float = DEFAULT_VOLATILITY
 
@@ -73,11 +67,13 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
             )
 
     def _build_scenarios(self, source_ids: list[UUID]) -> list[Scenario]:
-        combos = list(itertools.product(
-            self.config.exchange_rates,
-            self.config.harvest_multipliers,
-            self.config.export_premium_pct,
-        ))
+        combos = list(
+            itertools.product(
+                self.config.exchange_rates,
+                self.config.harvest_multipliers,
+                self.config.export_premium_pct,
+            )
+        )
 
         scenarios: list[Scenario] = []
         for exchange, harvest, premium in combos:
@@ -114,9 +110,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
                     projected_outcome={
                         "price_brl": round(price, 2),
                         "margin_pct": round(
-                            (price - self.config.base_price_brl)
-                            / self.config.base_price_brl
-                            * 100,
+                            (price - self.config.base_price_brl) / self.config.base_price_brl * 100,
                             2,
                         ),
                     },
@@ -189,9 +183,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
             source_hypotheses=source_ids,
         )
 
-    def _project_price(
-        self, exchange: float, harvest: float, premium: float
-    ) -> float:
+    def _project_price(self, exchange: float, harvest: float, premium: float) -> float:
         base = self.config.base_price_brl
         exchange_effect = (exchange - 5.5) / 5.5 * 0.5
         harvest_effect = (1 - harvest) * 0.4
@@ -223,11 +215,15 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
         ex_label = (
             "high FX"
             if exchange > np.median(self.config.exchange_rates)
-            else "low FX" if exchange < np.median(self.config.exchange_rates) else "mid FX"
+            else "low FX"
+            if exchange < np.median(self.config.exchange_rates)
+            else "mid FX"
         )
         hv_label = (
             "strong harvest"
             if harvest > HARVEST_NEUTRAL
-            else "weak harvest" if harvest < HARVEST_NEUTRAL else "normal harvest"
+            else "weak harvest"
+            if harvest < HARVEST_NEUTRAL
+            else "normal harvest"
         )
         return f"{ex_label} x {hv_label}"

@@ -132,8 +132,7 @@ class AgroProcessor(BaseProcessor[AgroConfig]):
                 )
 
             reliability = min(
-                1.0 if ev.source.reliability.value != "degraded" else 0.3
-                for ev, _ in items
+                1.0 if ev.source.reliability.value != "degraded" else 0.3 for ev, _ in items
             )
 
             states.append(

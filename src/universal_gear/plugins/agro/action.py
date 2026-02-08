@@ -115,9 +115,7 @@ class AgroActionEmitter(BaseDecider[AgroConfig]):
             source_scenarios=[scenario.scenario_id],
         )
 
-    def _build_risk_alert(
-        self, scenario: Scenario, baseline: Scenario | None
-    ) -> DecisionObject:
+    def _build_risk_alert(self, scenario: Scenario, baseline: Scenario | None) -> DecisionObject:
         price = self._scenario_price(scenario)
         base = self._baseline_price(baseline)
         spread = (price - base) / base * 100 if base else 0.0
@@ -175,14 +173,9 @@ class AgroActionEmitter(BaseDecider[AgroConfig]):
             source_scenarios=[s.scenario_id for s in simulation.scenarios],
         )
 
-    def _rank_decisions(
-        self, decisions: list[DecisionObject]
-    ) -> list[DecisionObject]:
+    def _rank_decisions(self, decisions: list[DecisionObject]) -> list[DecisionObject]:
         """Assign priority scores and return sorted by priority desc."""
-        ranked = [
-            d.model_copy(update={"priority": self._compute_priority(d)})
-            for d in decisions
-        ]
+        ranked = [d.model_copy(update={"priority": self._compute_priority(d)}) for d in decisions]
         return sorted(ranked, key=lambda d: d.priority, reverse=True)
 
     def _compute_priority(self, decision: DecisionObject) -> int:

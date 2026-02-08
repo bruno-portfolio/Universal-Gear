@@ -77,13 +77,46 @@ Every stage reports what it did and how long it took. If something fails, it fai
 
 ## Export for BI Tools
 
-Add `--json` to get structured output you can feed into dashboards and reports:
+Use `--output json` to get structured output you can feed into dashboards and reports:
 
 ```bash
-ugear run agro --json
+ugear run agro --output json
 ```
 
-The output is structured JSON that can be imported directly into Power BI, Tableau, Metabase, or any tool that consumes JSON data.
+The output is structured JSON that can be imported directly into Power BI, Tableau, Metabase, or any tool that consumes JSON data. CSV is also available via `--output csv`.
+
+## Don't Code? Start Here
+
+You don't need to know how to program. Universal Gear includes a spreadsheet that walks you through the same decision process, step by step.
+
+**What you get:** An Excel file with seven tabs. Each tab is one step of the process. Each tab has instructions at the top telling you exactly what to do. Green cells are yours to fill. There is a complete example already filled in (buying coffee for an office) so you can see what a finished cycle looks like before you start your own.
+
+The seven steps:
+
+| Tab | What you do |
+|-----|-------------|
+| **OBSERVAR** | Write down what you see: prices, quantities, news. One row per observation. |
+| **COMPRIMIR** | Summarize: what is the average? Is it going up or down? How much did it change? |
+| **HIPOTESE** | Write what you think is happening -- and what would prove you wrong. |
+| **SIMULAR** | Imagine at least two futures: one where things go well, one where they don't. |
+| **DECIDIR** | Make your decision. How confident are you? What happens if you're wrong? |
+| **FEEDBACK** | After time passes: what actually happened? Were you right? What did you learn? |
+| **DASHBOARD** | Your score over time. How many decisions did you get right? |
+
+To generate the spreadsheet:
+
+```bash
+pip install universal-gear[sheets]
+ugear template
+```
+
+This creates `ugear-decisao.xlsx`. Open it in Excel or Google Sheets and start filling in.
+
+When you're ready to try the code version, you can export your spreadsheet to a format the CLI understands:
+
+```bash
+ugear import-sheet my-decisions.xlsx
+```
 
 ## Build Your Own Plugin
 
@@ -102,12 +135,25 @@ class MyCollector(BaseCollector[MyConfig]):
 
 Full guide: [docs/plugins.md](docs/plugins.md)
 
+## Roadmap
+
+Universal Gear grows in layers -- each one makes the framework accessible to more people:
+
+- ~~**CLI output**~~ -- Decision summary panels, track record display, JSON/CSV export
+- ~~**Plugin scaffold**~~ -- `ugear new-plugin` and `ugear check-plugin` for building custom domains
+- ~~**Spreadsheet template**~~ -- `ugear template` generates a guided xlsx for non-programmers
+- **Content and tutorials** -- Articles explaining the methodology in plain language
+- **Web interface** -- A minimal webapp for browser-based decision pipelines
+
+See the [MANIFESTO.md](MANIFESTO.md) for the philosophy behind each layer.
+
 ## Documentation
 
 - [MANIFESTO.md](MANIFESTO.md) -- Design philosophy: why every stage acknowledges its limits
 - [docs/quickstart.md](docs/quickstart.md) -- Getting started in five minutes
 - [docs/architecture.md](docs/architecture.md) -- System architecture and contracts
 - [docs/plugins.md](docs/plugins.md) -- Building custom plugins
+- [docs/tutorial-first-plugin.md](docs/tutorial-first-plugin.md) -- Step-by-step: your first plugin
 - [docs/cli.md](docs/cli.md) -- Full CLI reference
 
 ## License

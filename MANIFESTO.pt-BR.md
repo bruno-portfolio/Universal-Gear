@@ -1,6 +1,6 @@
 # Universal Gear — Manifesto
 
-*[Read in English](MANIFESTO.md)*
+*[Leia em Ingles](MANIFESTO.md)*
 
 ---
 
@@ -77,6 +77,17 @@ explícito. Zero telemetria por padrão. A confiança do usuário é inegociáve
 
 **Defaults conservadores.**
 Menos acesso, não mais. Toda permissão é opt-in. Na dúvida, negue.
+
+---
+
+## Acessibilidade como Principio
+
+Raciocinio estruturado nao e privilegio de quem programa.
+O framework existe em multiplas camadas -- codigo, planilhas, conteudo -- pra que
+qualquer pessoa possa decidir melhor com as ferramentas que ja tem.
+
+A engrenagem gira pra traders e pra donos de pequeno negocio. Pra analistas com
+Python e pra gente com um navegador. Cada camada baixa a barreira sem baixar o padrao.
 
 ---
 

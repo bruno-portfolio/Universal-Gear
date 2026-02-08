@@ -199,9 +199,40 @@ The Agro plugin package provides a complete pipeline tailored for agricultural d
 | Action | `agro_action` | `AgroActionEmitter` |
 | Monitor | `agro_monitor` | `AgroMonitor` |
 
+### Finance Plugin
+
+The Finance plugin connects to the Brazilian Central Bank (BCB) for macroeconomic data:
+
+| Stage | Plugin Name | Class |
+|---|---|---|
+| Collector | `bcb` | `BCBCollector` |
+| Processor | `finance` | `FinanceProcessor` |
+| Analyzer | `finance` | `FinanceAnalyzer` |
+| Simulator | `finance_scenario` | `FinanceScenarioEngine` |
+| Action | `finance_action` | `FinanceActionEmitter` |
+| Monitor | `finance_monitor` | `FinanceMonitor` |
+
 ---
 
-## 7. Listing Registered Plugins
+## 7. Scaffolding a New Plugin
+
+The fastest way to create a new plugin is with the CLI scaffold:
+
+```
+ugear new-plugin energy
+```
+
+This generates nine files following all project conventions: config, six stage implementations, and a test skeleton. After filling in the TODOs, validate with:
+
+```
+ugear check-plugin energy
+```
+
+For a step-by-step walkthrough, see [tutorial-first-plugin.md](tutorial-first-plugin.md).
+
+---
+
+## 8. Listing Registered Plugins
 
 Universal Gear provides a CLI command to inspect which plugins are currently registered and available in your environment.
 

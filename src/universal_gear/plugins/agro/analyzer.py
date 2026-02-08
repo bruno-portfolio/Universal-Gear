@@ -63,9 +63,7 @@ class AgroAnalyzer(BaseAnalyzer[AgroConfig]):
         summary = f"{prices[-1]:.2f}" if prices else "N/A"
 
         return Hypothesis(
-            statement=(
-                f"{self.config.commodity.title()} price within normal range ({summary})"
-            ),
+            statement=(f"{self.config.commodity.title()} price within normal range ({summary})"),
             rationale=(
                 f"No seasonal deviations or persistent trends detected "
                 f"across {len(states)} weekly states. "

@@ -68,19 +68,23 @@ def export_csv(result: PipelineResult) -> str:
     for stage_metric in result.metrics.stages:
         status = "OK" if stage_metric.success else "FAIL"
         detail = _stage_detail_plain(result, stage_metric.stage)
-        writer.writerow([
-            stage_metric.stage,
-            status,
-            detail,
-            f"{stage_metric.duration_seconds:.3f}",
-        ])
+        writer.writerow(
+            [
+                stage_metric.stage,
+                status,
+                detail,
+                f"{stage_metric.duration_seconds:.3f}",
+            ]
+        )
 
-    writer.writerow([
-        "TOTAL",
-        "SUCCESS" if result.success else "FAILED",
-        result.error or "",
-        f"{result.metrics.total_duration:.3f}",
-    ])
+    writer.writerow(
+        [
+            "TOTAL",
+            "SUCCESS" if result.success else "FAILED",
+            result.error or "",
+            f"{result.metrics.total_duration:.3f}",
+        ]
+    )
 
     return buf.getvalue()
 
@@ -112,17 +116,12 @@ def _stage_detail_plain(  # noqa: PLR0911
         case "simulation":
             if result.simulation:
                 n = len(result.simulation.scenarios)
-                has_bl = (
-                    "baseline + " if result.simulation.baseline else ""
-                )
+                has_bl = "baseline + " if result.simulation.baseline else ""
                 return f"{has_bl}{n} scenarios"
         case "decision":
             if result.decision:
                 n = len(result.decision.decisions)
-                types = {
-                    d.decision_type.value
-                    for d in result.decision.decisions
-                }
+                types = {d.decision_type.value for d in result.decision.decisions}
                 return f"{n} decisions | {', '.join(types)}"
         case "feedback":
             if result.feedback:

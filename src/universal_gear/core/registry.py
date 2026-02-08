@@ -6,9 +6,7 @@ from typing import Any
 
 from universal_gear.core.exceptions import PluginNotFoundError
 
-_VALID_STAGES = frozenset(
-    {"collector", "processor", "analyzer", "model", "action", "monitor"}
-)
+_VALID_STAGES = frozenset({"collector", "processor", "analyzer", "model", "action", "monitor"})
 
 _REGISTRY: dict[str, dict[str, type[Any]]] = {stage: {} for stage in _VALID_STAGES}
 

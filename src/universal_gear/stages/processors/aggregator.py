@@ -106,10 +106,7 @@ class AggregatorProcessor(BaseProcessor[AggregatorConfig]):
             if not signals:
                 continue
 
-            reliability = min(
-                (ev.source.reliability.value != "degraded") * 1.0
-                for ev, _ in items
-            )
+            reliability = min((ev.source.reliability.value != "degraded") * 1.0 for ev, _ in items)
             reliability = max(reliability, 0.0)
 
             states.append(
@@ -137,9 +134,7 @@ class AggregatorProcessor(BaseProcessor[AggregatorConfig]):
             case Granularity.QUARTERLY:
                 return start + timedelta(days=DAYS_PER_MONTH * 3)
 
-    def _compute_signals(
-        self, signal_values: dict[str, list[float]]
-    ) -> list[SignalValue]:
+    def _compute_signals(self, signal_values: dict[str, list[float]]) -> list[SignalValue]:
         signals: list[SignalValue] = []
 
         for name, values in signal_values.items():

@@ -49,9 +49,7 @@ class ZScoreDetector(BaseAnalyzer[ZScoreAnalyzerConfig]):
             states_analyzed=len(compression.states),
         )
 
-    def _analyze_signal(
-        self, states: list[MarketState], signal_name: str
-    ) -> list[Hypothesis]:
+    def _analyze_signal(self, states: list[MarketState], signal_name: str) -> list[Hypothesis]:
         values = self._extract_signal(states, signal_name)
         if len(values) < MIN_WINDOW_FILL:
             return []
@@ -109,9 +107,7 @@ class ZScoreDetector(BaseAnalyzer[ZScoreAnalyzerConfig]):
             )
         ]
 
-    def _extract_signal(
-        self, states: list[MarketState], signal_name: str
-    ) -> list[float]:
+    def _extract_signal(self, states: list[MarketState], signal_name: str) -> list[float]:
         values: list[float] = []
         for state in states:
             for signal in state.signals:

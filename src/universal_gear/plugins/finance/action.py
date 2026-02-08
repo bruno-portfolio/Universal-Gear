@@ -233,14 +233,9 @@ class FinanceActionEmitter(BaseDecider[FinanceConfig]):
             source_scenarios=[s.scenario_id for s in simulation.scenarios],
         )
 
-    def _rank_decisions(
-        self, decisions: list[DecisionObject]
-    ) -> list[DecisionObject]:
+    def _rank_decisions(self, decisions: list[DecisionObject]) -> list[DecisionObject]:
         """Assign priority scores and return sorted by priority desc."""
-        ranked = [
-            d.model_copy(update={"priority": self._compute_priority(d)})
-            for d in decisions
-        ]
+        ranked = [d.model_copy(update={"priority": self._compute_priority(d)}) for d in decisions]
         return sorted(ranked, key=lambda d: d.priority, reverse=True)
 
     def _compute_priority(self, decision: DecisionObject) -> int:

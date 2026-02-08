@@ -160,9 +160,7 @@ class Pipeline:
         match stage:
             case "observation":
                 if output.quality_report.reliability_score < MIN_RELIABILITY_SCORE:
-                    raise StageTransitionError(
-                        "Reliability score too low to proceed"
-                    )
+                    raise StageTransitionError("Reliability score too low to proceed")
             case "compression":
                 if not output.states:
                     raise StageTransitionError("No MarketState produced")

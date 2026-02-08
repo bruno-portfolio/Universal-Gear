@@ -95,8 +95,8 @@ def _build_agro_collection(
     return CollectionResult(events=events, quality_report=quality_report)
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_toy_pipeline_end_to_end():
     """Full toy pipeline runs successfully with all stages populated."""
     pipeline = _build_toy_pipeline()
@@ -111,8 +111,8 @@ async def test_toy_pipeline_end_to_end():
     assert result.feedback is not None
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_toy_pipeline_produces_90_events():
     """Collection stage produces exactly 90 events (default n_records)."""
     pipeline = _build_toy_pipeline()
@@ -123,8 +123,8 @@ async def test_toy_pipeline_produces_90_events():
     assert len(result.collection.events) == 90
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_toy_pipeline_produces_hypotheses():
     """Pipeline generates at least 1 hypothesis from synthetic data."""
     pipeline = _build_toy_pipeline()
@@ -135,8 +135,8 @@ async def test_toy_pipeline_produces_hypotheses():
     assert len(result.hypothesis.hypotheses) >= 1
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_toy_pipeline_produces_decisions():
     """Pipeline generates at least 1 decision from the simulation output."""
     pipeline = _build_toy_pipeline()
@@ -147,8 +147,8 @@ async def test_toy_pipeline_produces_decisions():
     assert len(result.decision.decisions) >= 1
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_toy_pipeline_deterministic():
     """Running the pipeline twice with the same seed produces identical counts."""
     pipeline_a = _build_toy_pipeline()
@@ -173,8 +173,54 @@ async def test_toy_pipeline_deterministic():
     assert len(result_a.hypothesis.hypotheses) == len(result_b.hypothesis.hypotheses)
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
+async def test_agro_sample_collector_loads_fixture():
+    """AgrobrCollector with sample=True loads bundled fixture without network."""
+    from universal_gear.plugins.agro.collector import AgrobrCollector
+
+    config = AgroConfig(sample=True)
+    collector = AgrobrCollector(config)
+    result = await collector.collect()
+
+    assert len(result.events) == 90
+    assert result.quality_report.reliability_score == 0.85
+
+    for event in result.events:
+        assert event.schema_version == "cepea-v1"
+        assert "valor" in event.data
+        assert isinstance(event.data["valor"], float)
+
+
+@pytest.mark.offline()
+@pytest.mark.asyncio()
+async def test_agro_sample_full_pipeline():
+    """Full agro pipeline runs end-to-end using sample data."""
+    from universal_gear.plugins.agro.collector import AgrobrCollector
+
+    config = AgroConfig(sample=True)
+
+    pipeline = Pipeline(
+        collector=AgrobrCollector(config),
+        processor=AgroProcessor(config),
+        analyzer=AgroAnalyzer(config),
+        model=AgroScenarioEngine(AgroModelConfig()),
+        action=AgroActionEmitter(config),
+        monitor=AgroMonitor(config),
+    )
+
+    result = await pipeline.run()
+
+    assert result.success is True, f"Pipeline failed: {result.error}"
+    assert result.collection is not None
+    assert len(result.collection.events) == 90
+    assert result.decision is not None
+    assert len(result.decision.decisions) >= 1
+    assert result.feedback is not None
+
+
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_agro_processor_produces_states():
     """AgroProcessor converts a mock CollectionResult into MarketStates."""
     collection = _build_agro_collection(n_records=30)
@@ -192,8 +238,8 @@ async def test_agro_processor_produces_states():
         assert len(price_signals) == 1
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_agro_analyzer_detects_seasonal_deviation():
     """AgroAnalyzer detects deviation when prices spike in later records."""
     collection = _build_agro_collection(
@@ -213,8 +259,8 @@ async def test_agro_analyzer_detects_seasonal_deviation():
     assert has_price_hypothesis, f"Expected price-related hypothesis, got: {statements}"
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_agro_model_produces_scenarios():
     """AgroScenarioEngine produces scenarios from hypotheses."""
     collection = _build_agro_collection(
@@ -236,8 +282,8 @@ async def test_agro_model_produces_scenarios():
         assert "price_brl" in scenario.projected_outcome
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_agro_action_produces_decisions():
     """AgroActionEmitter produces decisions from agro scenarios."""
     collection = _build_agro_collection(
@@ -261,8 +307,8 @@ async def test_agro_action_produces_decisions():
         assert decision.recommendation
 
 
-@pytest.mark.offline
-@pytest.mark.asyncio
+@pytest.mark.offline()
+@pytest.mark.asyncio()
 async def test_agro_monitor_produces_scorecards():
     """AgroMonitor produces scorecards from agro decisions."""
     collection = _build_agro_collection(

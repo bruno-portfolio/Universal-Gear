@@ -136,7 +136,27 @@ The full set of decorators, one per stage:
 | `@register_action` | Decision |
 | `@register_monitor` | Feedback |
 
-For a complete walkthrough, see [plugins.md](plugins.md).
+Or use the scaffold to generate a full plugin skeleton:
+
+```
+ugear new-plugin weather
+ugear check-plugin weather
+```
+
+For a complete walkthrough, see [tutorial-first-plugin.md](tutorial-first-plugin.md).
+
+---
+
+## Use Without Code
+
+Generate a guided spreadsheet template:
+
+```
+pip install universal-gear[sheets]
+ugear template
+```
+
+This creates a structured xlsx with seven tabs following the six-stage loop. Fill in the green cells, track your decisions, and export to JSON when ready.
 
 ---
 
@@ -145,3 +165,5 @@ For a complete walkthrough, see [plugins.md](plugins.md).
 - [architecture.md](architecture.md) -- Architectural decisions, component diagram, and data flow.
 - [contracts.md](contracts.md) -- Full schema reference for every stage's input and output types.
 - [plugins.md](plugins.md) -- Detailed guide to creating, registering, and distributing plugins.
+- [tutorial-first-plugin.md](tutorial-first-plugin.md) -- Step-by-step: your first plugin.
+- [cli.md](cli.md) -- Full CLI reference.

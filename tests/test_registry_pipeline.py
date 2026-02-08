@@ -84,7 +84,7 @@ class TestRegistry:
             _REGISTRY[stage].clear()
             _REGISTRY[stage].update(self._snapshot.get(stage, {}))
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_register_and_retrieve_plugin(self):
         """register() + get_plugin() round-trip returns the original class."""
 
@@ -95,7 +95,7 @@ class TestRegistry:
         retrieved = get_plugin("collector", "test_dummy")
         assert retrieved is DummyCollector
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_list_plugins_returns_registered_items(self):
         """list_plugins() includes a freshly registered plugin."""
 
@@ -106,7 +106,7 @@ class TestRegistry:
         result = list_plugins("processor")
         assert "test_proc" in result["processor"]
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_list_plugins_with_stage_filter(self):
         """list_plugins(stage=...) returns only the requested stage."""
 
@@ -118,13 +118,13 @@ class TestRegistry:
         assert set(result.keys()) == {"analyzer"}
         assert "test_ana" in result["analyzer"]
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_get_plugin_raises_plugin_not_found_error(self):
         """get_plugin() raises PluginNotFoundError for an unknown name."""
         with pytest.raises(PluginNotFoundError):
             get_plugin("collector", "absolutely_nonexistent_plugin")
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_register_invalid_stage_raises_value_error(self):
         """register() with an invalid stage name raises ValueError."""
         with pytest.raises(ValueError, match="Unknown stage"):
@@ -133,7 +133,7 @@ class TestRegistry:
             class Bad:
                 pass
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_re_registration_overwrites_existing(self):
         """Registering the same stage/name twice replaces the first class."""
 
@@ -147,7 +147,7 @@ class TestRegistry:
 
         assert get_plugin("model", "overwrite_me") is Second
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_convenience_shortcuts_work(self):
         """register_collector/processor/analyzer/model/action/monitor register correctly."""
         shortcuts = [
@@ -171,7 +171,7 @@ class TestRegistry:
         for (_shortcut_fn, stage, name), cls in zip(shortcuts, classes, strict=True):
             assert get_plugin(stage, name) is cls
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     def test_list_plugins_returns_all_six_stages_when_no_filter(self):
         """list_plugins() with no stage argument returns all 6 valid stages."""
         result = list_plugins()
@@ -215,7 +215,7 @@ class _FailingProcessor:
 class TestPipeline:
     """Tests for universal_gear.core.pipeline."""
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_full_pipeline_runs_successfully(self):
         """End-to-end pipeline with real toy stages completes without error."""
         pipe = _build_pipeline(validate_transitions=False)
@@ -223,7 +223,7 @@ class TestPipeline:
         assert result.success is True
         assert result.error is None
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_pipeline_result_has_all_six_stages_populated(self):
         """PipelineResult has non-None values for all 6 stage outputs."""
         pipe = _build_pipeline(validate_transitions=False)
@@ -236,7 +236,7 @@ class TestPipeline:
         assert result.decision is not None
         assert result.feedback is not None
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_pipeline_metrics_records_all_stages(self):
         """Pipeline metrics contain an entry for each of the 6 stages."""
         pipe = _build_pipeline(validate_transitions=False)
@@ -255,7 +255,7 @@ class TestPipeline:
             assert m.duration_seconds >= 0
             assert m.success is True
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_fail_fast_true_stops_on_first_error(self):
         """With fail_fast=True, the pipeline stops at the first failing stage."""
         pipe = Pipeline(
@@ -276,7 +276,7 @@ class TestPipeline:
         assert len(result.metrics.stages) == 1
         assert result.metrics.stages[0].success is False
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_fail_fast_false_continues_after_error(self):
         """With fail_fast=False, the pipeline continues past failing stages."""
         pipe = Pipeline(
@@ -294,7 +294,7 @@ class TestPipeline:
         assert result.success is True
         assert len(result.metrics.stages) > 1
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_transition_validation_catches_low_reliability(self):
         """Transition validation raises StageTransitionError for low reliability_score."""
         cfg = SyntheticCollectorConfig(
@@ -314,7 +314,7 @@ class TestPipeline:
         assert result.error is not None
         assert "Reliability score too low" in result.error or "observation" in result.error
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_pipeline_with_validate_transitions_false_skips_validation(self):
         """Pipeline with validate_transitions=False does not raise StageTransitionError."""
         cfg = SyntheticCollectorConfig(
@@ -333,7 +333,7 @@ class TestPipeline:
         if not result.success and result.error:
             assert "Reliability score too low" not in result.error
 
-    @pytest.mark.offline
+    @pytest.mark.offline()
     async def test_pipeline_success_flag_is_true_on_success(self):
         """A fully successful run sets PipelineResult.success to True."""
         pipe = _build_pipeline(validate_transitions=False)

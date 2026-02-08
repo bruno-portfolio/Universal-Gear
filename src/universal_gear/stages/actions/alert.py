@@ -32,6 +32,7 @@ class AlertConfig(BaseModel):
     expiry_days: int = DEFAULT_EXPIRY_DAYS
     decision_type: DecisionType = DecisionType.ALERT
 
+
 RISK_RANK: dict[RiskLevel, int] = {
     RiskLevel.LOW: 0,
     RiskLevel.MEDIUM: 1,
@@ -65,13 +66,9 @@ class ConditionalAlertEmitter(BaseDecider[AlertConfig]):
             )
         ]
 
-    def _build_decision(
-        self, scenario: Scenario, baseline: Scenario | None
-    ) -> DecisionObject:
+    def _build_decision(self, scenario: Scenario, baseline: Scenario | None) -> DecisionObject:
         price = scenario.projected_outcome.get("price", 0.0)
-        baseline_price = (
-            baseline.projected_outcome.get("price", price) if baseline else price
-        )
+        baseline_price = baseline.projected_outcome.get("price", price) if baseline else price
         spread_pct = ((price - baseline_price) / baseline_price * 100) if baseline_price else 0.0
 
         drivers = [

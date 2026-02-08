@@ -27,6 +27,7 @@ class AgroConfig(BaseModel):
     granularity: str = "weekly"
     safra: str | None = None
     uf: str | None = None
+    sample: bool = False
 
 
 SACA_60KG_TO_TON = 1000 / 60

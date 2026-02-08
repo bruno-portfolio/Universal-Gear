@@ -49,9 +49,7 @@ class SeasonalAnomalyDetector(BaseAnalyzer[SeasonalAnalyzerConfig]):
             states_analyzed=len(compression.states),
         )
 
-    def _analyze_signal(
-        self, states: list[MarketState], signal_name: str
-    ) -> list[Hypothesis]:
+    def _analyze_signal(self, states: list[MarketState], signal_name: str) -> list[Hypothesis]:
         values = self._extract_signal(states, signal_name)
         if len(values) < MIN_PERIODS_FOR_BASELINE:
             return []
@@ -76,8 +74,7 @@ class SeasonalAnomalyDetector(BaseAnalyzer[SeasonalAnalyzerConfig]):
         return [
             Hypothesis(
                 statement=(
-                    f"Signal '{signal_name}' is {deviation:.1f} std devs "
-                    f"{direction} seasonal mean"
+                    f"Signal '{signal_name}' is {deviation:.1f} std devs {direction} seasonal mean"
                 ),
                 rationale=(
                     f"Current value {current:.2f} vs seasonal mean {mean:.2f} "
@@ -93,8 +90,7 @@ class SeasonalAnomalyDetector(BaseAnalyzer[SeasonalAnalyzerConfig]):
                         operator="gt",
                         threshold=self.config.deviation_threshold,
                         description=(
-                            f"Deviation persists above "
-                            f"{self.config.deviation_threshold} std devs"
+                            f"Deviation persists above {self.config.deviation_threshold} std devs"
                         ),
                     ),
                 ],
@@ -111,9 +107,7 @@ class SeasonalAnomalyDetector(BaseAnalyzer[SeasonalAnalyzerConfig]):
             )
         ]
 
-    def _extract_signal(
-        self, states: list[MarketState], signal_name: str
-    ) -> list[float]:
+    def _extract_signal(self, states: list[MarketState], signal_name: str) -> list[float]:
         values: list[float] = []
         for state in states:
             for signal in state.signals:

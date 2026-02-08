@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
+from importlib import resources
 from typing import Any
 
 import structlog
@@ -34,6 +36,9 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
         events: list[RawEvent] = []
         flags: list[QualityFlag] = []
 
+        if self.config.sample:
+            return self._load_sample()
+
         for source_name in self.config.sources:
             match source_name:
                 case "cepea":
@@ -63,6 +68,51 @@ class AgrobrCollector(BaseCollector[AgroConfig]):
             flags=flags,
             schema_match=len(flags) == 0 or all(f.severity != "critical" for f in flags),
             reliability_score=valid / total if total > 0 else 0.0,
+        )
+
+        return CollectionResult(events=events, quality_report=quality_report)
+
+    def _load_sample(self) -> CollectionResult:
+        """Load cached sample data from bundled fixture for offline use."""
+        fixture_path = resources.files("universal_gear.plugins.agro.fixtures").joinpath(
+            "sample_cepea.json"
+        )
+
+        raw_records: list[dict[str, Any]] = json.loads(fixture_path.read_text("utf-8"))
+
+        source = SourceMeta(
+            source_id=f"cepea-{self.config.commodity}-sample",
+            source_type=SourceType.FILE,
+            url_or_path="bundled://sample_cepea.json",
+            reliability=SourceReliability.MEDIUM,
+        )
+
+        events: list[RawEvent] = []
+        for record in raw_records:
+            timestamp = _parse_timestamp(record.get("data"))
+            if timestamp is None:
+                continue
+            events.append(
+                RawEvent(
+                    source=source,
+                    timestamp=timestamp,
+                    data=record,
+                    schema_version="cepea-v1",
+                )
+            )
+
+        logger.info(
+            "agro.sample_loaded",
+            records=len(events),
+            commodity=self.config.commodity,
+        )
+
+        quality_report = DataQualityReport(
+            source=source,
+            total_records=len(events),
+            valid_records=len(events),
+            reliability_score=0.85,
+            notes="Sample data from bundled fixture (offline mode)",
         )
 
         return CollectionResult(events=events, quality_report=quality_report)

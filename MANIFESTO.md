@@ -81,6 +81,18 @@ Less access, not more. Every permission is opt-in. When in doubt, deny.
 
 ---
 
+## Accessibility as a Principle
+
+Structured reasoning is not a privilege reserved for those who write code.
+The framework exists in multiple layers — code, spreadsheets, content — so that
+anyone can make better decisions with the tools they already have.
+
+The gear turns for traders and for small business owners. For analysts with
+Python and for people with a browser. Each layer lowers the barrier without
+lowering the standard.
+
+---
+
 ## A Final Note
 
 Universal Gear is a framework for structured reasoning under

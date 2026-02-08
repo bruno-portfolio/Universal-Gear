@@ -113,9 +113,7 @@ class SyntheticCollector(BaseCollector[SyntheticCollectorConfig]):
 
         return CollectionResult(events=events, quality_report=quality_report)
 
-    def _generate_day(
-        self, rng: np.random.Generator, day: int, is_outlier: bool
-    ) -> dict[str, Any]:
+    def _generate_day(self, rng: np.random.Generator, day: int, is_outlier: bool) -> dict[str, Any]:
         seasonal = math.sin(2 * math.pi * day / SEASONAL_CYCLE_DAYS)
         noise_price = rng.normal(0, DAILY_NOISE_SCALE)
         noise_demand = rng.normal(0, DAILY_NOISE_SCALE)
@@ -126,10 +124,7 @@ class SyntheticCollector(BaseCollector[SyntheticCollectorConfig]):
         if is_outlier and rng.random() < OUTLIER_TRIGGER_PROBABILITY:
             price *= 1 + OUTLIER_SIGMA * DAILY_NOISE_SCALE * rng.choice([-1, 1])
 
-        if (
-            self.config.anomaly_start is not None
-            and day >= self.config.anomaly_start
-        ):
+        if self.config.anomaly_start is not None and day >= self.config.anomaly_start:
             price *= 1 + self.config.anomaly_magnitude
 
         data: dict[str, Any] = {}

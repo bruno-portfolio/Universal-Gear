@@ -58,7 +58,7 @@ ugear run agro --output json > agro_decisions.json
 ugear run finance
 ```
 
-The `finance` pipeline (under development) will apply the same six-stage logic to macroeconomic data:
+The `finance` pipeline applies the same six-stage logic to macroeconomic data:
 
 - **Observation** -- Collects exchange rates, interest rate decisions, and inflation indices from official sources.
 - **Compression** -- Normalizes heterogeneous indicators into comparable time windows.
@@ -69,7 +69,7 @@ The `finance` pipeline (under development) will apply the same six-stage logic t
 
 The output format is identical to the agro pipeline. The same Rich panel, the same six stages, the same JSON export. If you already know how to read agro output, you know how to read finance output.
 
-> **Note**: The `finance` pipeline is planned. The architecture supports it today -- only the data collector and domain-specific logic need to be built. See [plugins.md](plugins.md) for how to contribute one.
+> **Note**: The `finance` pipeline is fully implemented with data from BCB (Brazilian Central Bank). Run `ugear run finance` to try it.
 
 ---
 
@@ -135,7 +135,26 @@ For a complete walkthrough, see [plugins.md](plugins.md). For the data contracts
 
 ---
 
-## 5. Future: The Healthcare Analyst
+## 5. The Non-Programmer
+
+**Scenario**: You make recurring decisions at work -- purchasing supplies, setting prices, choosing vendors -- but you don't write code. You want a structured way to think through decisions instead of going with gut feeling.
+
+**With Universal Gear**: Generate a spreadsheet template and follow the seven tabs:
+
+```bash
+pip install universal-gear[sheets]
+ugear template
+```
+
+This creates `ugear-decisao.xlsx`. Open it in Excel or Google Sheets. Each tab is one step of the decision process, with instructions at the top and a pre-filled example (buying coffee for an office). Fill in the green cells with your own data.
+
+When you complete a full cycle -- from observation through feedback -- you have a documented, structured decision record. Over time, the DASHBOARD tab shows your track record: how many decisions you got right, your average error, and what you learned.
+
+No programming, no APIs, no terminal. Just a spreadsheet and a method.
+
+---
+
+## 6. Future: The Healthcare Analyst
 
 **Scenario**: You work in epidemiological monitoring or hospital capacity planning. You need to detect outbreaks early, project bed occupancy, and recommend resource allocation -- based on data, not intuition.
 
@@ -159,8 +178,9 @@ Want to build it? Start with [plugins.md](plugins.md).
 | Persona | Command | What you get |
 |---|---|---|
 | Commodity Analyst | `ugear run agro` | Price trend hypotheses, forward-selling recommendations, risk alerts |
-| Financial Analyst | `ugear run finance` | Exchange rate and rate-path scenarios, hedging alerts (planned) |
+| Financial Analyst | `ugear run finance` | Exchange rate and rate-path scenarios, hedging alerts |
 | BI Analyst | `ugear run agro --output json` | Structured JSON for dashboard integration |
+| Non-Programmer | `ugear template` | Guided spreadsheet for structured decisions without code |
 | Developer | `pip install -e ".[dev]"` | Full plugin SDK, typed contracts, test harness |
 | Healthcare Analyst | `ugear run saude` | Outbreak detection, capacity projections (future) |
 

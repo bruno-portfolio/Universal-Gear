@@ -27,18 +27,23 @@ ugear run <PIPELINE> [OPTIONS]
 
 **Options**
 
-| Option                       | Short | Default | Description                                                                 |
-|------------------------------|-------|---------|-----------------------------------------------------------------------------|
-| `--verbose`                  | `-v`  | `false` | Enable DEBUG-level logging (default is INFO).                               |
-| `--json`                     |       | `false` | Emit structured JSON log output instead of human-readable text.             |
-| `--fail-fast / --no-fail-fast` |     | `true`  | Abort the pipeline on the first stage failure (`--no-fail-fast` to continue). |
+| Option                       | Short | Default    | Description                                                                 |
+|------------------------------|-------|------------|-----------------------------------------------------------------------------|
+| `--verbose`                  | `-v`  | `false`    | Enable DEBUG-level logging (default is INFO).                               |
+| `--json`                     |       | `false`    | Emit structured JSON log output instead of human-readable text.             |
+| `--fail-fast / --no-fail-fast` |     | `true`     | Abort the pipeline on the first stage failure (`--no-fail-fast` to continue). |
+| `--output`                   | `-o`  | `terminal` | Output format: `terminal`, `json`, or `csv`.                               |
+| `--sample`                   |       | `false`    | Use bundled sample data instead of live APIs (offline mode).                |
+| `--decisions-only`           |       | `false`    | Show only decisions and track record, skip stage logs.                      |
+| `--all`                      |       | `false`    | Show all decisions (default: top 5 by confidence).                          |
 
 **Available pipelines**
 
 | Name   | Description                                                                   |
 |--------|-------------------------------------------------------------------------------|
-| `toy`  | Synthetic data pipeline. Uses a synthetic collector, aggregator processor, seasonal anomaly detector, conditional scenario engine, alert emitter, and backtest monitor. Useful for development and demonstration. |
-| `agro` | Agribusiness pipeline. Pulls real data via the agrobr collector and runs agro-specific processor, analyzer, scenario engine, action emitter, and monitor stages. |
+| `toy`     | Synthetic data pipeline. Uses a synthetic collector, aggregator processor, seasonal anomaly detector, conditional scenario engine, alert emitter, and backtest monitor. Useful for development and demonstration. |
+| `agro`    | Agribusiness pipeline. Pulls real data via the agrobr collector and runs agro-specific processor, analyzer, scenario engine, action emitter, and monitor stages. |
+| `finance` | Finance pipeline. Pulls macroeconomic data from BCB (Brazilian Central Bank) and runs finance-specific stages. |
 
 Any other value for `PIPELINE` prints an error and exits with code 1.
 
@@ -91,6 +96,125 @@ ugear plugins collector
 ```
 
 Output is a Rich table with two columns: **Stage** and **Plugins**.
+
+---
+
+### `ugear new-plugin`
+
+Scaffold a new domain plugin with all six pipeline stages.
+
+```
+ugear new-plugin <NAME>
+```
+
+**Arguments**
+
+| Argument | Required | Description                                         |
+|----------|----------|-----------------------------------------------------|
+| `NAME`   | Yes      | Plugin name in snake_case (e.g. `energy`, `weather`). |
+
+Creates nine files:
+
+- `src/universal_gear/plugins/<name>/` — `__init__.py`, `config.py`, `collector.py`, `processor.py`, `analyzer.py`, `model.py`, `action.py`, `monitor.py`
+- `tests/test_<name>_plugin.py` — test skeleton with config test and TODO markers
+
+Each generated file follows project conventions: correct base class, register decorator, async method signature, and import order.
+
+**Examples**
+
+```bash
+ugear new-plugin weather
+ugear new-plugin supply_chain
+```
+
+---
+
+### `ugear check-plugin`
+
+Validate that a plugin implements all required interfaces.
+
+```
+ugear check-plugin <NAME>
+```
+
+**Arguments**
+
+| Argument | Required | Description                 |
+|----------|----------|-----------------------------|
+| `NAME`   | Yes      | Plugin name to validate.    |
+
+Checks:
+
+- All seven modules exist (config + six stages)
+- Each stage module contains a class inheriting from the correct ABC
+- The config module exports a Pydantic `BaseModel` subclass
+
+Exits with code 0 if all checks pass, code 1 if issues are found.
+
+**Examples**
+
+```bash
+ugear check-plugin weather
+ugear check-plugin agro
+```
+
+---
+
+### `ugear template`
+
+Generate a decision-framework spreadsheet template (xlsx).
+
+```
+ugear template [OPTIONS]
+```
+
+**Options**
+
+| Option     | Short | Default              | Description                                      |
+|------------|-------|----------------------|--------------------------------------------------|
+| `--output` | `-o`  | `ugear-decisao.xlsx` | Output file path for the xlsx template.          |
+| `--lang`   |       | `pt`                 | Language: `pt` (Portuguese) or `en` (English).   |
+
+Requires `openpyxl`. Install with `pip install universal-gear[sheets]`.
+
+**Examples**
+
+```bash
+ugear template
+ugear template --output my-decisions.xlsx --lang en
+```
+
+---
+
+### `ugear import-sheet`
+
+Convert a filled spreadsheet template to JSON.
+
+```
+ugear import-sheet <XLSX_PATH> [OPTIONS]
+```
+
+**Arguments**
+
+| Argument    | Required | Description                          |
+|-------------|----------|--------------------------------------|
+| `XLSX_PATH` | Yes      | Path to the filled xlsx template.    |
+
+**Options**
+
+| Option     | Short | Default | Description                                      |
+|------------|-------|---------|--------------------------------------------------|
+| `--output` | `-o`  | `-`     | Output file path (default: stdout).              |
+
+Requires `openpyxl`. Install with `pip install universal-gear[sheets]`.
+
+**Examples**
+
+```bash
+ugear import-sheet planilha.xlsx
+ugear import-sheet planilha.xlsx --output result.json
+ugear import-sheet planilha.xlsx | jq '.decisions'
+```
 
 ---
 

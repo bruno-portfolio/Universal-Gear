@@ -1,0 +1,722 @@
+[
+  {
+    "data": "2024-07-01",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.48,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-02",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.42,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-03",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.44,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-04",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 133.43,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-05",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 133.43,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-08",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.78,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-09",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.33,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-10",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.16,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-11",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.05,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-12",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.34,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-15",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.76,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-16",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 134.31,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-17",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.25,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-18",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.53,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-19",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 134.79,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-22",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 133.73,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-23",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 134.17,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-24",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.9,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-25",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.1,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-26",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.12,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-29",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.91,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-30",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.31,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-07-31",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.09,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-01",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.83,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-02",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.02,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-05",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.89,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-06",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.49,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-07",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.94,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-08",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 139.02,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-09",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.84,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-12",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.17,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-13",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.0,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-14",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.51,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-15",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.43,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-16",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 129.98,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-19",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 130.68,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-20",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.13,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-21",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 129.32,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-22",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 129.98,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-23",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 128.43,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-26",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 127.98,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-27",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 127.77,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-28",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 128.06,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-29",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 129.19,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-08-30",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 130.11,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-02",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 130.68,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-03",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.61,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-04",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.33,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-05",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.73,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-06",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.02,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-09",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 130.61,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-10",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.36,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-11",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 131.21,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-12",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 134.16,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-13",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 133.33,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-16",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 132.16,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-17",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 133.23,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-18",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.09,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-19",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 135.84,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-20",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.0,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-23",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.86,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-24",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.89,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-25",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.34,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-26",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.85,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-27",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.14,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-09-30",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.56,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-01",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.75,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-02",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.2,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-03",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 136.98,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-04",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.99,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-07",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.84,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-08",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.78,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-09",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 142.67,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-10",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 142.09,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-11",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.56,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-14",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 140.72,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-15",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 142.01,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-16",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.48,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-17",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.54,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-18",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 142.59,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-21",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.88,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-22",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.67,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-23",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 139.61,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-24",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.46,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-25",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 137.93,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-28",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 138.58,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-29",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 140.16,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-30",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 140.29,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-10-31",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 140.76,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  },
+  {
+    "data": "2024-11-01",
+    "produto": "soja",
+    "praca": "Paranagua",
+    "valor": 141.11,
+    "unidade": "BRL/sc60kg",
+    "fonte": "CEPEA"
+  }
+]

@@ -46,9 +46,7 @@ class BacktestMonitor(BaseMonitor[BacktestConfig]):
             thresholds_adjusted=0,
         )
 
-    def _evaluate_decision(
-        self, dec: DecisionObject, rng: np.random.Generator
-    ) -> Scorecard:
+    def _evaluate_decision(self, dec: DecisionObject, rng: np.random.Generator) -> Scorecard:
         predictions: list[PredictionVsReality] = []
 
         for condition in dec.conditions:
