@@ -9,6 +9,21 @@ description = "Open-source decision framework for market intelligence under unce
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"
+authors = [{ name = "Bruno Escalhao" }]
+keywords = ["decision-framework", "market-intelligence", "uncertainty", "pipeline", "agro"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+]
+
 dependencies = [
     "pydantic>=2.0,<3.0",
     "pydantic-settings>=2.0,<3.0",
@@ -19,6 +34,11 @@ dependencies = [
     "pyyaml>=6.0",
     "numpy>=1.26",
 ]
+
+[project.urls]
+Homepage = "https://github.com/bruno-portfolio/universal-gear"
+Repository = "https://github.com/bruno-portfolio/universal-gear"
+Issues = "https://github.com/bruno-portfolio/universal-gear/issues"
 
 [project.optional-dependencies]
 agro = ["agrobr>=0.7"]
@@ -34,6 +54,9 @@ dev = [
 ugear = "universal_gear.cli.main:app"
 
 [project.entry-points."universal_gear.collectors"]
+
+[tool.hatch.build]
+exclude = ["nul", ".claude/", "engrenagem-universal-plano-execucao.md"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/universal_gear"]
