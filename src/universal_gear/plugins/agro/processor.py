@@ -47,6 +47,7 @@ class AgroProcessor(BaseProcessor[AgroConfig]):
             records_consumed=len(collection.events),
             records_produced=len(states),
             normalization_log=norm_log,
+            aggregation_methods={"price": "mean", "production": "mean"},
         )
 
     def _normalise_event(self, event: RawEvent) -> dict[str, Any]:

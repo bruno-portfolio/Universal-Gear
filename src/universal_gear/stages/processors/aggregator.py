@@ -54,6 +54,7 @@ class AggregatorProcessor(BaseProcessor[AggregatorConfig]):
             records_consumed=len(collection.events),
             records_produced=len(states),
             normalization_log=norm_log,
+            aggregation_methods=dict(self.config.strategies),
         )
 
     def _bucket_events(

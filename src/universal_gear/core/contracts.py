@@ -163,6 +163,7 @@ class CompressionResult(BaseModel):
     records_consumed: int
     records_produced: int
     normalization_log: list[str] = Field(default_factory=list)
+    aggregation_methods: dict[str, str] = Field(default_factory=dict)
     stage: str = "compression"
 
 
@@ -214,6 +215,7 @@ class HypothesisResult(BaseModel):
 
     hypotheses: list[Hypothesis]
     states_analyzed: int
+    context: dict[str, float] = Field(default_factory=dict)
     stage: str = "hypothesis"
 
 
@@ -239,6 +241,7 @@ class Scenario(BaseModel):
     projected_outcome: dict[str, float]
     confidence_interval: tuple[float, float]
     probability: float = Field(ge=0.0, le=1.0)
+    probability_method: str = ""
     risk_level: RiskLevel
     sensitivity: dict[str, float] = Field(default_factory=dict)
     source_hypotheses: list[UUID]
@@ -307,6 +310,7 @@ class DecisionObject(BaseModel):
     confidence: float = Field(ge=0.0, le=1.0)
     risk_level: RiskLevel
     cost_of_error: CostOfError
+    priority: int = 0
     expires_at: datetime | None = None
     source_scenarios: list[UUID]
     created_at: datetime = Field(default_factory=_utcnow)
@@ -364,4 +368,5 @@ class FeedbackResult(BaseModel):
     scorecards: list[Scorecard]
     sources_updated: int
     thresholds_adjusted: int
+    accuracy_trend: list[float] = Field(default_factory=list)
     stage: str = "feedback"

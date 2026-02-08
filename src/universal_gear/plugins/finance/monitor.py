@@ -37,11 +37,24 @@ class FinanceMonitor(BaseMonitor[FinanceConfig]):
 
         degradations.extend(await self._check_source_drift())
 
+        accuracy_trend = self._compute_accuracy_trend(scorecards)
+
         return FeedbackResult(
             scorecards=scorecards,
             sources_updated=len(degradations),
             thresholds_adjusted=0,
+            accuracy_trend=accuracy_trend,
         )
+
+    def _compute_accuracy_trend(self, scorecards: list[Scorecard]) -> list[float]:
+        """Compute per-scorecard hit rate as an accuracy trend."""
+        trend: list[float] = []
+        for sc in scorecards:
+            preds = sc.predictions_vs_reality
+            if preds:
+                hit_rate = sum(1 for p in preds if p.within_confidence) / len(preds)
+                trend.append(round(hit_rate, 4))
+        return trend
 
     def _evaluate_decision(self, dec: DecisionObject) -> Scorecard:
         predictions: list[PredictionVsReality] = []

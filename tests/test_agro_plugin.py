@@ -514,3 +514,156 @@ class TestAgroMonitor:
     def test_assess_outcome_empty_predictions(self):
         monitor = self._make_monitor()
         assert monitor._assess_outcome([]) == "neutral"
+
+
+# ---------------------------------------------------------------------------
+# Cross-cutting: 5 coherence improvements
+# ---------------------------------------------------------------------------
+
+
+class TestAgroCoherenceImprovements:
+    """Tests for context, probability_method, aggregation_methods, priority, accuracy_trend."""
+
+    @pytest.mark.offline
+    async def test_analyzer_populates_context(self):
+        analyzer = AgroAnalyzer(config=AgroConfig())
+        compression = _make_compression([100.0, 102.0, 98.0, 101.0, 99.0])
+        result = await analyzer.analyze(compression)
+
+        assert "price" in result.context
+        assert result.context["price"] == pytest.approx(99.0)
+
+    @pytest.mark.offline
+    async def test_model_anchors_baseline_from_context(self):
+        engine = AgroScenarioEngine(config=AgroModelConfig())
+        hr = HypothesisResult(
+            hypotheses=[_make_hypothesis()],
+            states_analyzed=4,
+            context={"price": 142.50},
+        )
+
+        await engine.simulate(hr)
+        assert engine.config.base_price_brl == pytest.approx(142.50)
+
+    @pytest.mark.offline
+    async def test_model_uses_default_baseline_without_context(self):
+        engine = AgroScenarioEngine(config=AgroModelConfig())
+        hr = _make_hypothesis_result(1)
+
+        await engine.simulate(hr)
+        assert engine.config.base_price_brl == pytest.approx(130.0)
+
+    @pytest.mark.offline
+    async def test_scenarios_have_probability_method(self):
+        engine = AgroScenarioEngine(config=AgroModelConfig())
+        hr = _make_hypothesis_result(1)
+
+        result = await engine.simulate(hr)
+
+        for scenario in result.scenarios:
+            assert scenario.probability_method in (
+                "inverse_distance_to_baseline",
+                "fixed_baseline",
+            )
+        assert result.baseline.probability_method == "fixed_baseline"
+
+    @pytest.mark.offline
+    async def test_decisions_have_priority_and_sorted(self):
+        emitter = AgroActionEmitter(config=AgroConfig())
+        source_ids = [uuid4()]
+        baseline = Scenario(
+            name="baseline (status quo)",
+            description="Baseline",
+            assumptions=[
+                Assumption(
+                    variable="exchange_rate",
+                    assumed_value=5.5,
+                    justification="Mid",
+                ),
+            ],
+            projected_outcome={"price_brl": 130.0},
+            confidence_interval=(114.4, 145.6),
+            probability=0.5,
+            risk_level=RiskLevel.MEDIUM,
+            sensitivity={"exchange_rate": 0.5},
+            source_hypotheses=source_ids,
+        )
+        high_risk = Scenario(
+            name="big-up",
+            description="Big up",
+            assumptions=[
+                Assumption(
+                    variable="exchange_rate",
+                    assumed_value=6.0,
+                    justification="Test",
+                ),
+            ],
+            projected_outcome={"price_brl": 160.0},
+            confidence_interval=(140.8, 179.2),
+            probability=0.5,
+            risk_level=RiskLevel.HIGH,
+            sensitivity={"exchange_rate": 0.5},
+            source_hypotheses=source_ids,
+        )
+        low_risk = Scenario(
+            name="small-up",
+            description="Small up",
+            assumptions=[
+                Assumption(
+                    variable="exchange_rate",
+                    assumed_value=5.8,
+                    justification="Test",
+                ),
+            ],
+            projected_outcome={"price_brl": 140.0},
+            confidence_interval=(123.2, 156.8),
+            probability=0.5,
+            risk_level=RiskLevel.MEDIUM,
+            sensitivity={"exchange_rate": 0.5},
+            source_hypotheses=source_ids,
+        )
+        sim = SimulationResult(
+            scenarios=[baseline, high_risk, low_risk],
+            baseline=baseline,
+        )
+
+        result = await emitter.decide(sim)
+        for dec in result.decisions:
+            assert dec.priority >= 0
+        priorities = [d.priority for d in result.decisions]
+        assert priorities == sorted(priorities, reverse=True)
+
+    @pytest.mark.offline
+    def test_monitor_accuracy_trend(self):
+        monitor = AgroMonitor(config=AgroConfig())
+
+        dec = DecisionObject(
+            decision_type=DecisionType.ALERT,
+            title="Test",
+            recommendation="Test",
+            conditions=[
+                Condition(
+                    description="Test",
+                    metric="m1",
+                    operator="gt",
+                    threshold=5.0,
+                    window="7 days",
+                ),
+            ],
+            drivers=[
+                DecisionDriver(
+                    name="x", weight=0.5, description="x",
+                ),
+            ],
+            confidence=0.6,
+            risk_level=RiskLevel.HIGH,
+            cost_of_error=CostOfError(
+                false_positive="fp", false_negative="fn",
+            ),
+            source_scenarios=[uuid4()],
+        )
+
+        sc = monitor._evaluate_decision(dec)
+        trend = monitor._compute_accuracy_trend([sc])
+        assert len(trend) == 1
+        assert 0.0 <= trend[0] <= 1.0

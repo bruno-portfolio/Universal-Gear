@@ -40,10 +40,22 @@ class FinanceAnalyzer(BaseAnalyzer[FinanceConfig]):
         if not hypotheses:
             hypotheses.append(self._null_hypothesis(compression.states))
 
+        context = self._build_context(compression.states)
+
         return HypothesisResult(
             hypotheses=hypotheses,
             states_analyzed=len(compression.states),
+            context=context,
         )
+
+    def _build_context(self, states: list[MarketState]) -> dict[str, float]:
+        """Extract latest observed values to pass downstream to the model."""
+        context: dict[str, float] = {}
+        for signal_name in ("exchange_rate", "selic_rate", "ipca_rate"):
+            values = _extract_signal(states, signal_name)
+            if values:
+                context[signal_name] = values[-1]
+        return context
 
     def _null_hypothesis(self, states: list[MarketState]) -> Hypothesis:
         """Generate a null hypothesis when no anomalies are detected."""

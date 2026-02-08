@@ -48,6 +48,11 @@ class FinanceProcessor(BaseProcessor[FinanceConfig]):
             records_consumed=len(collection.events),
             records_produced=len(states),
             normalization_log=norm_log,
+            aggregation_methods={
+                "exchange_rate": "mean",
+                "selic_rate": "mean",
+                "ipca_rate": "mean",
+            },
         )
 
     def _split_by_indicator(self, events: list[RawEvent]) -> dict[str, list[RawEvent]]:

@@ -55,6 +55,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
         super().__init__(config)
 
     async def simulate(self, hypotheses: HypothesisResult) -> SimulationResult:
+        self._apply_context(hypotheses.context)
         source_ids = [h.hypothesis_id for h in hypotheses.hypotheses]
         scenarios = self._build_scenarios(source_ids)
         baseline = self._build_baseline(source_ids)
@@ -63,6 +64,13 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
             scenarios=[baseline, *scenarios],
             baseline=baseline,
         )
+
+    def _apply_context(self, context: dict[str, float]) -> None:
+        """Override base price with observed data from the analyzer."""
+        if "price" in context:
+            self.config = self.config.model_copy(
+                update={"base_price_brl": context["price"]},
+            )
 
     def _build_scenarios(self, source_ids: list[UUID]) -> list[Scenario]:
         combos = list(itertools.product(
@@ -117,6 +125,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
                         round(price * (1 + vol), 2),
                     ),
                     probability=self._estimate_probability(exchange, harvest),
+                    probability_method="inverse_distance_to_baseline",
                     risk_level=self._assess_risk(price),
                     sensitivity={
                         "exchange_rate": 0.5,
@@ -170,6 +179,7 @@ class AgroScenarioEngine(BaseSimulator[AgroModelConfig]):
                 round(price * (1 + vol), 2),
             ),
             probability=0.5,
+            probability_method="fixed_baseline",
             risk_level=RiskLevel.MEDIUM,
             sensitivity={
                 "exchange_rate": 0.5,

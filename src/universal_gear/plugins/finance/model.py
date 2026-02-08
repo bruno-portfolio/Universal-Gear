@@ -51,6 +51,7 @@ class FinanceScenarioEngine(BaseSimulator[FinanceModelConfig]):
         super().__init__(config)
 
     async def simulate(self, hypotheses: HypothesisResult) -> SimulationResult:
+        self._apply_context(hypotheses.context)
         source_ids = [h.hypothesis_id for h in hypotheses.hypotheses]
         scenarios = self._build_scenarios(source_ids)
         baseline = self._build_baseline(source_ids)
@@ -59,6 +60,16 @@ class FinanceScenarioEngine(BaseSimulator[FinanceModelConfig]):
             scenarios=[baseline, *scenarios],
             baseline=baseline,
         )
+
+    def _apply_context(self, context: dict[str, float]) -> None:
+        """Override baseline values with observed data from the analyzer."""
+        updates: dict[str, float] = {}
+        if "exchange_rate" in context:
+            updates["baseline_exchange"] = context["exchange_rate"]
+        if "selic_rate" in context:
+            updates["baseline_selic"] = context["selic_rate"]
+        if updates:
+            self.config = self.config.model_copy(update=updates)
 
     def _build_scenarios(self, source_ids: list[UUID]) -> list[Scenario]:
         scenarios: list[Scenario] = []
@@ -95,6 +106,7 @@ class FinanceScenarioEngine(BaseSimulator[FinanceModelConfig]):
                             round(exchange * (1 + vol), 4),
                         ),
                         probability=self._estimate_probability(exchange, selic),
+                        probability_method="inverse_distance_to_baseline",
                         risk_level=self._assess_risk(exchange),
                         sensitivity={
                             "exchange_rate": 0.6,
@@ -137,6 +149,7 @@ class FinanceScenarioEngine(BaseSimulator[FinanceModelConfig]):
                 round(exchange * (1 + vol), 4),
             ),
             probability=0.5,
+            probability_method="fixed_baseline",
             risk_level=RiskLevel.MEDIUM,
             sensitivity={
                 "exchange_rate": 0.6,

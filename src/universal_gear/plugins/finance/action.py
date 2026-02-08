@@ -52,6 +52,7 @@ class FinanceActionEmitter(BaseDecider[FinanceConfig]):
         if not decisions:
             decisions.append(self._build_hold_recommendation(simulation))
 
+        decisions = self._rank_decisions(decisions)
         return DecisionResult(decisions=decisions)
 
     def _filter_usd_strengthens(self, simulation: SimulationResult) -> list[Scenario]:
@@ -231,6 +232,20 @@ class FinanceActionEmitter(BaseDecider[FinanceConfig]):
             ),
             source_scenarios=[s.scenario_id for s in simulation.scenarios],
         )
+
+    def _rank_decisions(
+        self, decisions: list[DecisionObject]
+    ) -> list[DecisionObject]:
+        """Assign priority scores and return sorted by priority desc."""
+        ranked = [
+            d.model_copy(update={"priority": self._compute_priority(d)})
+            for d in decisions
+        ]
+        return sorted(ranked, key=lambda d: d.priority, reverse=True)
+
+    def _compute_priority(self, decision: DecisionObject) -> int:
+        risk = RISK_RANK.get(decision.risk_level, 0)
+        return int(risk * decision.confidence * 10)
 
     def _build_drivers(self, scenario: Scenario) -> list[DecisionDriver]:
         return [
