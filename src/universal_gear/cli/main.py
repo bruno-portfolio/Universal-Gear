@@ -21,7 +21,13 @@ app = typer.Typer(name="ugear", help="Universal Gear - Market Intelligence Pipel
 console = Console()
 
 
-def _run_toy_pipeline(*, verbose: bool, json_output: bool, fail_fast: bool) -> None:
+def _run_toy_pipeline(
+    *,
+    verbose: bool,
+    json_output: bool,
+    fail_fast: bool,
+    output: str,
+) -> None:
     """Build and execute the toy pipeline."""
     from universal_gear.core.pipeline import Pipeline  # noqa: PLC0415
     from universal_gear.stages.actions.alert import (  # noqa: PLC0415
@@ -63,10 +69,16 @@ def _run_toy_pipeline(*, verbose: bool, json_output: bool, fail_fast: bool) -> N
 
     result = asyncio.run(pipeline.run())
 
-    _render_result(result, pipeline_name="toy")
+    _emit_result(result, pipeline_name="toy", output=output)
 
 
-def _run_agro_pipeline(*, verbose: bool, json_output: bool, fail_fast: bool) -> None:
+def _run_agro_pipeline(
+    *,
+    verbose: bool,
+    json_output: bool,
+    fail_fast: bool,
+    output: str,
+) -> None:
     """Build and execute the agro pipeline with real data from agrobr."""
     from universal_gear.core.pipeline import Pipeline  # noqa: PLC0415
     from universal_gear.plugins.agro.action import AgroActionEmitter  # noqa: PLC0415
@@ -95,7 +107,72 @@ def _run_agro_pipeline(*, verbose: bool, json_output: bool, fail_fast: bool) -> 
     )
 
     result = asyncio.run(pipeline.run())
-    _render_result(result, pipeline_name="agro")
+    _emit_result(result, pipeline_name="agro", output=output)
+
+
+def _run_finance_pipeline(
+    *,
+    verbose: bool,
+    json_output: bool,
+    fail_fast: bool,
+    output: str,
+) -> None:
+    """Build and execute the finance pipeline with real data from BCB."""
+    from universal_gear.core.pipeline import Pipeline
+    from universal_gear.plugins.finance.action import FinanceActionEmitter
+    from universal_gear.plugins.finance.analyzer import FinanceAnalyzer
+    from universal_gear.plugins.finance.collector import BCBCollector
+    from universal_gear.plugins.finance.config import FinanceConfig
+    from universal_gear.plugins.finance.model import (
+        FinanceModelConfig,
+        FinanceScenarioEngine,
+    )
+    from universal_gear.plugins.finance.monitor import FinanceMonitor
+    from universal_gear.plugins.finance.processor import FinanceProcessor
+
+    setup_logging(json_output=json_output, level="DEBUG" if verbose else "INFO")
+
+    config = FinanceConfig()
+
+    pipeline = Pipeline(
+        collector=BCBCollector(config),
+        processor=FinanceProcessor(config),
+        analyzer=FinanceAnalyzer(config),
+        model=FinanceScenarioEngine(FinanceModelConfig()),
+        action=FinanceActionEmitter(config),
+        monitor=FinanceMonitor(config),
+        fail_fast=fail_fast,
+    )
+
+    result = asyncio.run(pipeline.run())
+    _emit_result(result, pipeline_name="finance", output=output)
+
+
+def _emit_result(
+    result: object,
+    *,
+    pipeline_name: str = "toy",
+    output: str = "terminal",
+) -> None:
+    """Dispatch result rendering based on output format."""
+    from universal_gear.core.pipeline import PipelineResult  # noqa: PLC0415
+
+    if not isinstance(result, PipelineResult):
+        return
+
+    if output == "json":
+        from universal_gear.cli.export import export_json  # noqa: PLC0415
+
+        print(export_json(result))
+        return
+
+    if output == "csv":
+        from universal_gear.cli.export import export_csv  # noqa: PLC0415
+
+        print(export_csv(result), end="")
+        return
+
+    _render_result(result, pipeline_name=pipeline_name)
 
 
 def _render_result(result: object, *, pipeline_name: str = "toy") -> None:
@@ -179,19 +256,53 @@ def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
 
 @app.command()
 def run(
-    pipeline: str = typer.Argument(help="Pipeline name: 'toy', 'agro', or path to YAML"),
+    pipeline: str = typer.Argument(
+        help="Pipeline name: 'toy', 'agro', or path to YAML",
+    ),
     verbose: bool = typer.Option(False, "--verbose", "-v"),
     json_output: bool = typer.Option(False, "--json"),
     fail_fast: bool = typer.Option(True, "--fail-fast/--no-fail-fast"),
+    output: str = typer.Option(
+        "terminal",
+        "--output",
+        "-o",
+        help="Output format: terminal (default), json, csv",
+    ),
 ) -> None:
     """Run a pipeline end-to-end."""
+    if output not in ("terminal", "json", "csv"):
+        console.print(
+            f"[red]Invalid output format '{output}'. "
+            f"Choose from: terminal, json, csv[/]"
+        )
+        raise typer.Exit(code=1)
+
     match pipeline:
         case "toy":
-            _run_toy_pipeline(verbose=verbose, json_output=json_output, fail_fast=fail_fast)
+            _run_toy_pipeline(
+                verbose=verbose,
+                json_output=json_output,
+                fail_fast=fail_fast,
+                output=output,
+            )
         case "agro":
-            _run_agro_pipeline(verbose=verbose, json_output=json_output, fail_fast=fail_fast)
+            _run_agro_pipeline(
+                verbose=verbose,
+                json_output=json_output,
+                fail_fast=fail_fast,
+                output=output,
+            )
+        case "finance":
+            _run_finance_pipeline(
+                verbose=verbose,
+                json_output=json_output,
+                fail_fast=fail_fast,
+                output=output,
+            )
         case _:
-            console.print(f"[red]Pipeline '{pipeline}' not yet implemented.[/]")
+            console.print(
+                f"[red]Pipeline '{pipeline}' not yet implemented.[/]"
+            )
             raise typer.Exit(code=1)
 
 
@@ -253,4 +364,10 @@ def _ensure_plugins_loaded() -> None:
     import universal_gear.stages.models.conditional  # noqa: PLC0415
     import universal_gear.stages.models.montecarlo  # noqa: PLC0415
     import universal_gear.stages.monitors.backtest  # noqa: PLC0415
+    import universal_gear.plugins.finance.action  # noqa: PLC0415
+    import universal_gear.plugins.finance.analyzer  # noqa: PLC0415
+    import universal_gear.plugins.finance.collector  # noqa: PLC0415
+    import universal_gear.plugins.finance.model  # noqa: PLC0415
+    import universal_gear.plugins.finance.monitor  # noqa: PLC0415
+    import universal_gear.plugins.finance.processor  # noqa: PLC0415
     import universal_gear.stages.processors.aggregator  # noqa: PLC0415, F401

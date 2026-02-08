@@ -7,27 +7,55 @@
 [![Python](https://img.shields.io/pypi/pyversions/universal-gear)](https://pypi.org/project/universal-gear/)
 [![License](https://img.shields.io/github/license/bruno-portfolio/Universal-Gear)](LICENSE)
 
-**Framework open-source em Python para inteligência de mercado sob incerteza.**
+Toda semana voce toma decisoes com dados incompletos.
+O Universal Gear estrutura esse processo -- pra voce decidir melhor, explicar o porque, e aprender com os erros.
 
-```mermaid
-flowchart LR
-    A["Observação\n(Imperfeita)"] -->|CollectionResult| B[Compressão]
-    B -->|CompressionResult| C[Hipótese]
-    C -->|HypothesisResult| D[Simulação]
-    D -->|SimulationResult| E[Decisão]
-    E -->|DecisionResult| F[Feedback]
-    F -->|FeedbackResult| A
+## O Que Ele Faz?
+
+O Universal Gear roda um loop de decisao em seis estagios sobre dados reais de mercado e devolve resultados estruturados e auditaveis.
+
+**Trader de commodities** -- "Soja caiu tres semanas seguidas. E sazonal ou tendencia? Devo fazer hedge?"
+Rode `ugear run agro` com dados reais do agronegocio brasileiro. O pipeline detecta anomalias, simula cenarios e indica se o sinal vale uma acao.
+
+**Analista financeiro** -- "USD/BRL disparou de um dia pro outro. Ruido ou mudanca de regime?"
+Rode `ugear run finance` com dados do Banco Central. Mesmos seis estagios, dominio diferente -- observacao, compressao, hipotese, simulacao, decisao, feedback.
+
+**Qualquer pessoa com decisoes recorrentes** -- Voce nao precisa ser trader. Qualquer decisao que voce toma repetidamente sob incerteza (compras, precificacao, estoque) se encaixa nesse loop. O framework te obriga a mostrar o trabalho: o que voce observou, o que assumiu, o que decidiu e se deu certo.
+
+## Os Seis Estagios
+
+Todo pipeline segue o mesmo loop:
+
+```
+  Observar --> Comprimir --> Hipotetizar --> Simular --> Decidir --> Feedback
+      ^                                                                |
+      +----------------------------------------------------------------+
 ```
 
-## Início Rápido
+| Estagio | O que responde |
+|---------|----------------|
+| **Observar** | O que esta acontecendo no mercado agora? |
+| **Comprimir** | Qual e o padrao das ultimas semanas? |
+| **Hipotetizar** | Isso e normal ou fora do comum? |
+| **Simular** | Se continuar assim, o que pode acontecer? |
+| **Decidir** | O que eu deveria fazer? |
+| **Feedback** | Minha ultima decisao funcionou? |
+
+Nenhum estagio finge ser perfeito. Cada um carrega suas limitacoes adiante, pra voce sempre saber com o que esta trabalhando.
+
+## Instalar e Rodar
 
 ```bash
-pip install -e .
-ugear run toy
+pip install universal-gear
+ugear run toy          # teste agora -- offline, sem configuracao
+ugear run agro         # dados reais de preco de soja do Brasil
+ugear run finance      # taxas de cambio USD/BRL do BCB
 ```
 
+A saida fica assim:
+
 ```
-┌──────── Universal Gear - toy pipeline ────────┐
+┌──────── Universal Gear - agro pipeline ───────┐
 │ OK  Observation  90 events │ reliability: 0.93 │
 │ OK  Compression  13 states │ weekly            │
 │ OK  Hypothesis   1 hypotheses                  │
@@ -37,35 +65,51 @@ ugear run toy
 └────── SUCCESS - total: 0.0s ──────────────────┘
 ```
 
-## Para Quem É
+Cada estagio reporta o que fez e quanto tempo levou. Se algo falhar, falha alto -- sem erros silenciosos.
 
-1. **Desenvolvedores construindo pipelines de decisão** -- Monte o loop de seis estágios com stages assíncronos, contratos Pydantic v2 e observabilidade via structlog. Troque qualquer estágio sem tocar no resto.
+## Pra Quem E
 
-2. **Cientistas de dados explorando sinais de mercado** -- Execute `ugear run toy` para um sandbox sintético ou `ugear run agro` contra dados reais do agronegócio brasileiro via agrobr. Inspecione cada resultado intermediário através de contratos tipados.
+- **Analistas e traders de commodities** -- Inteligencia de mercado estruturada para produtos agricolas, com dados reais de fontes brasileiras.
+- **Analistas financeiros e macro** -- Pipelines de decisao para cambio, juros e indicadores macroeconomicos.
+- **Times de business intelligence** -- Exporte resultados em JSON e importe no Power BI, Tableau ou qualquer ferramenta de BI.
+- **Qualquer pessoa que toma decisoes recorrentes sob incerteza** -- Compras, precificacao, estoque, logistica -- qualquer dominio onde voce decide regularmente com informacao imperfeita.
+- **Desenvolvedores construindo pipelines de decisao** -- Troque qualquer estagio, adicione novas fontes de dados ou crie um plugin de dominio inteiramente novo.
 
-3. **Especialistas de domínio adicionando plugins para mercados específicos** -- Registre coletores, compressores ou simuladores customizados com decorators (`@register_collector`, etc.) ou via `entry_points`. Sem necessidade de mexer nos internos do framework.
+## Exportar para Ferramentas de BI
 
-## Pipelines
+Adicione `--json` pra obter saida estruturada que alimenta dashboards e relatorios:
 
-| Pipeline | Fonte de Dados | Caso de Uso |
-|----------|----------------|-------------|
-| `toy` | Sintético (offline) | Aprendizado, testes, CI |
-| `agro` | Dados reais do agronegócio brasileiro (agrobr) | Inteligência de mercado em produção |
+```bash
+ugear run agro --json
+```
 
-## Funcionalidades
+A saida e JSON estruturado que pode ser importado diretamente no Power BI, Tableau, Metabase ou qualquer ferramenta que consome dados em JSON.
 
-- **Loop de feedback em 6 estágios** -- Observação, Compressão, Hipótese, Simulação, Decisão, Feedback
-- **Contratos Pydantic v2** -- Toda fronteira entre estágios é um objeto de resultado tipado e validado
-- **Pipeline assíncrono** -- Estágios rodam de forma assíncrona para coletores com I/O pesado
-- **Sistema de plugins** -- Decorators (`@register_collector`, `@register_compressor`, ...) e setuptools `entry_points`
-- **Observabilidade via structlog** -- Logging estruturado em todo o pipeline
-- **118 testes passando** -- Cobertura abrangente em todos os estágios
+## Crie Seu Proprio Plugin
 
-## Documentação
+O Universal Gear e agnóstico de dominio no seu nucleo. Os pipelines `toy` e `agro` sao plugins -- e voce pode criar o seu pra qualquer dominio.
 
-- [MANIFESTO.md](MANIFESTO.pt-BR.md) -- Filosofia de design e fundamentos arquiteturais
-- [docs/](docs/) -- Documentação completa
+Registre um coletor, processador, analisador ou qualquer outro estagio com um unico decorator:
 
-## Licença
+```python
+from universal_gear.core.registry import register_collector
 
-MIT
+@register_collector("my_source")
+class MyCollector(BaseCollector[MyConfig]):
+    async def collect(self) -> CollectionResult:
+        ...
+```
+
+Guia completo: [docs/plugins.md](docs/plugins.md)
+
+## Documentacao
+
+- [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) -- Filosofia de design: por que cada estagio reconhece seus limites
+- [docs/quickstart.md](docs/quickstart.md) -- Comecando em cinco minutos
+- [docs/architecture.md](docs/architecture.md) -- Arquitetura do sistema e contratos
+- [docs/plugins.md](docs/plugins.md) -- Construindo plugins customizados
+- [docs/cli.md](docs/cli.md) -- Referencia completa do CLI
+
+## Licenca
+
+MIT -- feito no Brasil, pensado pro mundo.
