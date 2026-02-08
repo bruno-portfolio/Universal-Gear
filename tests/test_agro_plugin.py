@@ -158,7 +158,7 @@ class TestAgroAnalyzer:
 
     @pytest.mark.offline
     async def test_returns_null_hypothesis_when_insufficient_data(self):
-        """With fewer than MIN_STATES_FOR_ANALYSIS states, analyze returns only a null hypothesis."""
+        """With fewer than MIN_STATES, analyze returns only a null hypothesis."""
         analyzer = self._make_analyzer()
         compression = _make_compression([100.0, 101.0])
         assert len(compression.states) < MIN_STATES_FOR_ANALYSIS
