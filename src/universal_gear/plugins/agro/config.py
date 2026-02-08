@@ -21,7 +21,7 @@ class AgroConfig(BaseModel):
     commodity: str = "soja"
     region: str | None = None
     date_start: str = Field(default_factory=lambda: _days_ago(90))
-    date_end: str = Field(default_factory=lambda: _today())
+    date_end: str = Field(default_factory=_today)
     sources: list[str] = Field(default_factory=lambda: ["cepea"])
     currency: str = "BRL"
     granularity: str = "weekly"
