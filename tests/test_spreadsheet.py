@@ -5,9 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from openpyxl import load_workbook
 
-from universal_gear.cli.spreadsheet import (
+openpyxl = pytest.importorskip("openpyxl", reason="openpyxl not installed")
+load_workbook = openpyxl.load_workbook
+
+from universal_gear.cli.spreadsheet import (  # noqa: E402
     SHEET_NAMES,
     generate_template,
     read_sheet_as_json,
@@ -16,12 +18,12 @@ from universal_gear.cli.spreadsheet import (
 EXPECTED_SHEETS = 7
 
 
-@pytest.fixture()
+@pytest.fixture
 def template_path(tmp_path: Path) -> Path:
     return generate_template(tmp_path / "test_template.xlsx")
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 class TestGenerateTemplate:
     def test_creates_file(self, tmp_path: Path):
         path = generate_template(tmp_path / "out.xlsx")
@@ -72,7 +74,7 @@ class TestGenerateTemplate:
         assert isinstance(path, Path)
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 class TestReadSheetAsJson:
     def test_roundtrip_reads_observations(self, template_path: Path):
         data = read_sheet_as_json(template_path)

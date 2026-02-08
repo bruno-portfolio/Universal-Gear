@@ -96,7 +96,7 @@ def _make_feedback(
     )
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 class TestDecisionPanel:
     def test_renders_decisions_sorted_by_confidence(self):
         con, buf = _make_console()
@@ -174,7 +174,7 @@ class TestDecisionPanel:
         assert "85%" in output
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 class TestTrackRecord:
     def test_renders_hit_rate(self):
         con, buf = _make_console()

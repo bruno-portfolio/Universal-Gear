@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-02-08
+
+### Added
+
+- `finance` pipeline for Brazilian macroeconomic data (USD/BRL, SELIC, IPCA) via BCB
+- CLI decision panels with Rich output (`--decisions-only`, `--all`, `--output json/csv`)
+- `ugear new-plugin <name>` scaffold generator (9 files, working skeleton)
+- `ugear check-plugin <name>` interface contract validator
+- `ugear template` spreadsheet generator for non-programmers (7-tab xlsx with guided example)
+- `ugear import-sheet` to convert filled spreadsheets to pipeline-compatible JSON
+- `--sample` flag for offline pipeline runs with fixture data
+- Track record display with hit rate and historical accuracy
+- Optional `[sheets]` dependency group for openpyxl
+- Tutorial: "Your First Plugin" step-by-step guide
+- Use-cases documentation for five personas
+- 204 tests covering all new features
+
+### Changed
+
+- Upgraded minimum ruff to 0.5 in dev dependencies
+- README rewritten for accessibility (bilingual, non-programmer sections)
+- Documentation expanded: cli.md, plugins.md, quickstart.md, architecture.md
+
 ## [0.1.0] - 2026-02-08
 
 ### Added
@@ -23,4 +46,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 118 tests with full coverage across all stages
 - Bilingual documentation (English and Portuguese)
 
+[0.2.0]: https://github.com/bruno-portfolio/Universal-Gear/releases/tag/v0.2.0
 [0.1.0]: https://github.com/bruno-portfolio/Universal-Gear/releases/tag/v0.1.0

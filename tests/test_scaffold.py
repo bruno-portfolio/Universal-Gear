@@ -14,7 +14,7 @@ EXPECTED_PLUGIN_FILES = 8
 EXPECTED_TOTAL_FILES = 9
 
 
-@pytest.fixture()
+@pytest.fixture
 def _cleanup():
     yield
     plugin_dir = PLUGIN_BASE / SCAFFOLD_NAME
@@ -25,7 +25,7 @@ def _cleanup():
         test_file.unlink()
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 @pytest.mark.usefixtures("_cleanup")
 class TestGeneratePlugin:
     def test_creates_expected_files(self):

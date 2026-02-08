@@ -12,7 +12,7 @@ from universal_gear.cli.scaffold import PLUGIN_BASE, TEST_BASE, generate_plugin
 CHECKER_NAME = "_test_checker_tmp"
 
 
-@pytest.fixture()
+@pytest.fixture
 def _cleanup():
     yield
     plugin_dir = PLUGIN_BASE / CHECKER_NAME
@@ -23,7 +23,7 @@ def _cleanup():
         test_file.unlink()
 
 
-@pytest.mark.offline()
+@pytest.mark.offline
 @pytest.mark.usefixtures("_cleanup")
 class TestCheckPlugin:
     def test_valid_scaffold_passes(self):
