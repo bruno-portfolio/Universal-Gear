@@ -146,7 +146,7 @@ Siga o mesmo padrão para cada estágio:
 | **Action** | Produzir itens `DecisionObject` com base na análise de cenários |
 | **Monitor** | Comparar decisões passadas com a realidade, produzir itens `Scorecard` |
 
-Cada assinatura de método e tipo de retorno já está no scaffold. A referência `contracts.py` documenta cada campo: veja [contracts.md](contracts.md).
+Cada assinatura de método e tipo de retorno já está no scaffold. A referência `contracts.py` documenta cada campo: veja [contracts.pt-BR.md](contracts.pt-BR.md).
 
 ---
 
@@ -204,7 +204,7 @@ Use `--decisions-only` para focar nas saídas, `--all` para ver todas as decisõ
 
 ## Referência
 
-- [architecture.md](architecture.md) -- Design do pipeline e fluxo de dados
-- [contracts.md](contracts.md) -- Referência completa de schemas para todos os tipos de estágio
-- [plugins.md](plugins.md) -- Detalhes internos do sistema de plugins e pontos de entrada
-- [cli.md](cli.md) -- Referência de comandos da CLI
+- [architecture.pt-BR.md](architecture.pt-BR.md) -- Design do pipeline e fluxo de dados
+- [contracts.pt-BR.md](contracts.pt-BR.md) -- Referência completa de schemas para todos os tipos de estágio
+- [plugins.pt-BR.md](plugins.pt-BR.md) -- Detalhes internos do sistema de plugins e pontos de entrada
+- [cli.pt-BR.md](cli.pt-BR.md) -- Referência de comandos da CLI

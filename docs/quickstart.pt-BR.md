@@ -145,7 +145,7 @@ ugear new-plugin weather
 ugear check-plugin weather
 ```
 
-Para um passo a passo completo, consulte [tutorial-first-plugin.md](tutorial-first-plugin.md).
+Para um passo a passo completo, consulte [tutorial-first-plugin.pt-BR.md](tutorial-first-plugin.pt-BR.md).
 
 ---
 
@@ -164,8 +164,8 @@ Isso cria um xlsx estruturado com sete abas seguindo o ciclo de seis estágios. 
 
 ## Próximos Passos
 
-- [architecture.md](architecture.md) -- Decisões arquiteturais, diagrama de componentes e fluxo de dados.
-- [contracts.md](contracts.md) -- Referência completa de schemas para os tipos de entrada e saída de cada estágio.
-- [plugins.md](plugins.md) -- Guia detalhado para criar, registrar e distribuir plugins.
-- [tutorial-first-plugin.md](tutorial-first-plugin.md) -- Passo a passo: seu primeiro plugin.
-- [cli.md](cli.md) -- Referência completa da CLI.
+- [architecture.pt-BR.md](architecture.pt-BR.md) -- Decisões arquiteturais, diagrama de componentes e fluxo de dados.
+- [contracts.pt-BR.md](contracts.pt-BR.md) -- Referência completa de schemas para os tipos de entrada e saída de cada estágio.
+- [plugins.pt-BR.md](plugins.pt-BR.md) -- Guia detalhado para criar, registrar e distribuir plugins.
+- [tutorial-first-plugin.pt-BR.md](tutorial-first-plugin.pt-BR.md) -- Passo a passo: seu primeiro plugin.
+- [cli.pt-BR.md](cli.pt-BR.md) -- Referência completa da CLI.

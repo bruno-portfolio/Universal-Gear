@@ -134,7 +134,7 @@ class MyCollector(BaseCollector[MyConfig]):
         ...
 ```
 
-Guia completo: [docs/plugins.md](docs/plugins.md)
+Guia completo: [docs/plugins.pt-BR.md](docs/plugins.pt-BR.md)
 
 ## Roadmap
 
@@ -151,11 +151,11 @@ Veja o [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) pra entender a filosofia por tr�
 ## Documentação
 
 - [MANIFESTO.pt-BR.md](MANIFESTO.pt-BR.md) -- Filosofia de design: por que cada estágio reconhece seus limites
-- [docs/quickstart.md](docs/quickstart.md) -- Começando em cinco minutos
-- [docs/architecture.md](docs/architecture.md) -- Arquitetura do sistema e contratos
-- [docs/plugins.md](docs/plugins.md) -- Construindo plugins customizados
-- [docs/tutorial-first-plugin.md](docs/tutorial-first-plugin.md) -- Passo a passo: seu primeiro plugin
-- [docs/cli.md](docs/cli.md) -- Referência completa do CLI
+- [docs/quickstart.pt-BR.md](docs/quickstart.pt-BR.md) -- Começando em cinco minutos
+- [docs/architecture.pt-BR.md](docs/architecture.pt-BR.md) -- Arquitetura do sistema e contratos
+- [docs/plugins.pt-BR.md](docs/plugins.pt-BR.md) -- Construindo plugins customizados
+- [docs/tutorial-first-plugin.pt-BR.md](docs/tutorial-first-plugin.pt-BR.md) -- Passo a passo: seu primeiro plugin
+- [docs/cli.pt-BR.md](docs/cli.pt-BR.md) -- Referência completa do CLI
 
 ## Licença
 

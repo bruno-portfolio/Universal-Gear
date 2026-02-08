@@ -107,7 +107,7 @@ A saída em JSON contém o resultado de cada etapa: eventos brutos, estados comp
 0 7 * * 1  ugear run agro --output json > /data/agro_latest.json
 ```
 
-O esquema JSON completo de cada etapa está documentado em [contracts.md](contracts.md).
+O esquema JSON completo de cada etapa está documentado em [contracts.pt-BR.md](contracts.pt-BR.md).
 
 ---
 
@@ -133,7 +133,7 @@ Cada etapa tem a mesma estrutura: uma classe base, um decorator de registro, uma
 
 Plugins externos podem ser distribuídos como pacotes Python independentes usando entry points padrão -- sem necessidade de alterações no Universal Gear.
 
-Para um passo a passo completo, veja [plugins.md](plugins.md). Para os contratos de dados entre etapas, veja [contracts.md](contracts.md). Para instalação e primeira execução, veja [quickstart.md](quickstart.md).
+Para um passo a passo completo, veja [plugins.pt-BR.md](plugins.pt-BR.md). Para os contratos de dados entre etapas, veja [contracts.pt-BR.md](contracts.pt-BR.md). Para instalação e primeira execução, veja [quickstart.pt-BR.md](quickstart.pt-BR.md).
 
 ---
 
@@ -171,7 +171,7 @@ Sem programação, sem APIs, sem terminal. Apenas uma planilha e um método.
 
 **Este plugin ainda não existe** -- mas a arquitetura está pronta para ele. Os contratos, as comportas de validação e o ciclo de feedback já estão implementados. Um plugin `saude` precisaria implementar seis classes (uma por etapa) seguindo o mesmo padrão do plugin `agro` existente.
 
-Quer construí-lo? Comece por [plugins.md](plugins.md).
+Quer construí-lo? Comece por [plugins.pt-BR.md](plugins.pt-BR.md).
 
 ---
 
@@ -190,8 +190,8 @@ Quer construí-lo? Comece por [plugins.md](plugins.md).
 
 ## Próximos Passos
 
-- [quickstart.md](quickstart.md) -- Instale o Universal Gear e execute seu primeiro pipeline em menos de cinco minutos.
-- [cli.md](cli.md) -- Referência completa da CLI com todos os comandos e opções.
-- [architecture.md](architecture.md) -- Como o pipeline de seis etapas funciona por dentro.
-- [contracts.md](contracts.md) -- Referência completa de esquemas para entrada e saída de cada etapa.
-- [plugins.md](plugins.md) -- Construa e distribua seu próprio plugin de domínio.
+- [quickstart.pt-BR.md](quickstart.pt-BR.md) -- Instale o Universal Gear e execute seu primeiro pipeline em menos de cinco minutos.
+- [cli.pt-BR.md](cli.pt-BR.md) -- Referência completa da CLI com todos os comandos e opções.
+- [architecture.pt-BR.md](architecture.pt-BR.md) -- Como o pipeline de seis etapas funciona por dentro.
+- [contracts.pt-BR.md](contracts.pt-BR.md) -- Referência completa de esquemas para entrada e saída de cada etapa.
+- [plugins.pt-BR.md](plugins.pt-BR.md) -- Construa e distribua seu próprio plugin de domínio.

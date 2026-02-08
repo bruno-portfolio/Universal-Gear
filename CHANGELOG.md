@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `finance` pipeline for Brazilian macroeconomic data (USD/BRL, SELIC, IPCA) via BCB
 - CLI decision panels with Rich output (`--decisions-only`, `--all`, `--output json/csv`)
+- Grouped decision output: similar decisions collapsed with summary, drivers, confidence/risk ranges
 - `ugear new-plugin <name>` scaffold generator (9 files, working skeleton)
 - `ugear check-plugin <name>` interface contract validator
 - `ugear template` spreadsheet generator for non-programmers (7-tab xlsx with guided example)
@@ -20,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `[sheets]` dependency group for openpyxl
 - Tutorial: "Your First Plugin" step-by-step guide
 - Use-cases documentation for five personas
-- 204 tests covering all new features
+- Bilingual documentation: all docs available in English and Portuguese (pt-BR)
+- 223 tests covering all new features
 
 ### Changed
 

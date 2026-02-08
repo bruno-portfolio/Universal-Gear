@@ -66,9 +66,17 @@ ugear run toy --json --no-fail-fast
 ugear run agro -v --json --fail-fast
 ```
 
-Ap\u00f3s a execu\u00e7\u00e3o, um painel formatado com Rich \u00e9 exibido no terminal mostrando
-o status de cada est\u00e1gio (OK / FAIL), um resumo em uma linha, a dura\u00e7\u00e3o do
-est\u00e1gio e o resultado geral do pipeline.
+Após a execução, um painel formatado com Rich é exibido no terminal mostrando
+o status de cada estágio (OK / FAIL), um resumo em uma linha, a duração do
+estágio e o resultado geral do pipeline.
+
+**Agrupamento de decisões.** Quando múltiplas decisões compartilham o mesmo
+prefixo de título e tipo de decisão, elas são agrupadas em uma única linha.
+A linha agrupada mostra contagem de cenários, categorias de drivers, faixa
+consolidada de FP/FN, e confiança/risco como faixas em vez de valores únicos.
+Isso reduz ruído quando vários cenários levam à mesma conclusão. Decisões
+únicas são exibidas sem agrupamento. A saída JSON não é afetada -- o
+agrupamento é apenas visual.
 
 ---
 

@@ -230,7 +230,7 @@ Isso gera nove arquivos seguindo todas as convenções do projeto: configuraçã
 ugear check-plugin energy
 ```
 
-Para um passo a passo detalhado, consulte [tutorial-first-plugin.md](tutorial-first-plugin.md).
+Para um passo a passo detalhado, consulte [tutorial-first-plugin.pt-BR.md](tutorial-first-plugin.pt-BR.md).
 
 ---
 

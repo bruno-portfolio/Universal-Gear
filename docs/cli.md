@@ -67,6 +67,13 @@ After execution, a Rich-formatted panel is printed to the terminal showing
 each stage's status (OK / FAIL), a one-line detail summary, the stage
 duration, and the overall pipeline result.
 
+**Decision grouping.** When multiple decisions share the same title prefix
+and decision type, they are collapsed into a single grouped row. The grouped
+row shows a scenario count, driver categories, a consolidated FP/FN range,
+and confidence/risk as ranges instead of single values. This reduces noise
+when many scenarios lead to the same conclusion. Single decisions render
+ungrouped. JSON output is not affected -- grouping is presentation-only.
+
 ---
 
 ### `ugear plugins`
