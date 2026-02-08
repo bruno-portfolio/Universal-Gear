@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 
 import typer
@@ -14,11 +15,10 @@ from universal_gear.core.logging import setup_logging
 from universal_gear.core.registry import list_plugins
 
 if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding="utf-8")
-    sys.stderr.reconfigure(encoding="utf-8")
+    os.environ.setdefault("PYTHONUTF8", "1")
 
 app = typer.Typer(name="ugear", help="Universal Gear - Market Intelligence Pipeline")
-console = Console(force_terminal=True)
+console = Console()
 
 
 def _run_toy_pipeline(*, verbose: bool, json_output: bool, fail_fast: bool) -> None:
