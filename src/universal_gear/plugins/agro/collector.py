@@ -300,13 +300,16 @@ def _parse_timestamp(value: Any) -> datetime | None:
         dt = value
     else:
         try:
-            import pandas as pd
+            dt = datetime.fromisoformat(str(value))
+        except (ValueError, TypeError):
+            try:
+                import pandas as pd
 
-            ts = pd.Timestamp(value)
-            if ts is not pd.NaT:
-                dt = ts.to_pydatetime()
-        except Exception:
-            pass
+                ts = pd.Timestamp(value)
+                if ts is not pd.NaT:
+                    dt = ts.to_pydatetime()
+            except Exception:
+                pass
 
     if dt is None:
         return None
