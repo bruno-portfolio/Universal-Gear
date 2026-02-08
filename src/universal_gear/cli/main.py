@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 
 import typer
 from rich.console import Console
@@ -11,6 +12,10 @@ from rich.table import Table
 
 from universal_gear.core.logging import setup_logging
 from universal_gear.core.registry import list_plugins
+
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
 
 app = typer.Typer(name="ugear", help="Universal Gear - Market Intelligence Pipeline")
 console = Console(force_terminal=True)
