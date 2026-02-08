@@ -127,27 +127,27 @@ def _make_hypothesis_result(n: int = 1) -> HypothesisResult:
 
 
 class TestFinanceConfig:
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_default_indicators(self):
         cfg = FinanceConfig()
         assert cfg.indicators == ["usd_brl"]
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_default_currency(self):
         cfg = FinanceConfig()
         assert cfg.base_currency == "BRL"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_default_granularity(self):
         cfg = FinanceConfig()
         assert cfg.granularity == "weekly"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_sgs_series_known(self):
         assert "selic" in SGS_SERIES
         assert "ipca" in SGS_SERIES
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_indicator_units_known(self):
         assert INDICATOR_UNITS["usd_brl"] == "BRL/USD"
         assert INDICATOR_UNITS["selic"] == "% p.a."
@@ -163,7 +163,7 @@ class TestFinanceAnalyzer:
     def _make_analyzer(self, **kwargs) -> FinanceAnalyzer:
         return FinanceAnalyzer(config=FinanceConfig(**kwargs))
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_returns_empty_when_insufficient_data(self):
         analyzer = self._make_analyzer()
         compression = _make_compression([5.5, 5.6])
@@ -172,7 +172,7 @@ class TestFinanceAnalyzer:
         result = await analyzer.analyze(compression)
         assert result.hypotheses == []
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_returns_empty_when_std_zero(self):
         analyzer = self._make_analyzer()
         compression = _make_compression([5.5, 5.5, 5.5, 5.5, 5.5])
@@ -181,7 +181,7 @@ class TestFinanceAnalyzer:
         anomaly = [h for h in result.hypotheses if "std dev" in h.statement.lower()]
         assert anomaly == []
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_detects_exchange_anomaly_above(self):
         analyzer = self._make_analyzer()
         # Small variance in history, then a big spike
@@ -193,7 +193,7 @@ class TestFinanceAnalyzer:
         assert len(anomalies) == 1
         assert "USD/BRL" in anomalies[0].statement
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_detects_rising_trend(self):
         analyzer = self._make_analyzer()
         values = [5.0, 5.1, 5.2, 5.3, 5.4]
@@ -203,7 +203,7 @@ class TestFinanceAnalyzer:
         trend = [h for h in result.hypotheses if "rising" in h.statement.lower()]
         assert len(trend) >= 1
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_detects_falling_trend(self):
         analyzer = self._make_analyzer()
         values = [5.5, 5.5, 5.4, 5.3, 5.2]
@@ -213,7 +213,7 @@ class TestFinanceAnalyzer:
         trend = [h for h in result.hypotheses if "falling" in h.statement.lower()]
         assert len(trend) >= 1
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_detects_volatility_spike(self):
         analyzer = self._make_analyzer()
         # Stable then a sudden big jump
@@ -234,7 +234,7 @@ class TestFinanceScenarioEngine:
     def _make_engine(self, **kwargs) -> FinanceScenarioEngine:
         return FinanceScenarioEngine(config=FinanceModelConfig(**kwargs))
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_model_config_defaults(self):
         cfg = FinanceModelConfig()
         assert cfg.exchange_scenarios == [5.0, 5.5, 6.0, 6.5]
@@ -242,7 +242,7 @@ class TestFinanceScenarioEngine:
         assert cfg.baseline_exchange == 5.75
         assert cfg.baseline_selic == 13.25
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_generates_12_scenarios_plus_baseline(self):
         engine = self._make_engine()
         hr = _make_hypothesis_result(1)
@@ -254,7 +254,7 @@ class TestFinanceScenarioEngine:
         assert result.baseline is not None
         assert result.baseline.name == "baseline (status quo)"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_baseline_uses_configured_values(self):
         engine = self._make_engine()
         hr = _make_hypothesis_result(1)
@@ -266,44 +266,44 @@ class TestFinanceScenarioEngine:
         assert assumptions["exchange_rate"] == pytest.approx(5.75)
         assert assumptions["selic_rate"] == pytest.approx(13.25)
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_cost_index_at_baseline(self):
         engine = self._make_engine()
         idx = engine._cost_index(5.75, 13.25)
         assert idx == pytest.approx(1.0)
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_cost_index_fx_impact(self):
         engine = self._make_engine(baseline_exchange=5.0)
         # 10% fx increase => cost_index = 1 + 0.1*0.6 = 1.06
         idx = engine._cost_index(5.5, engine.config.baseline_selic)
         assert idx == pytest.approx(1.06)
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_risk_critical(self):
         engine = self._make_engine(baseline_exchange=5.0)
         # 20% deviation
         assert engine._assess_risk(6.0) == RiskLevel.CRITICAL
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_risk_high(self):
         engine = self._make_engine(baseline_exchange=5.0)
         # ~12% deviation
         assert engine._assess_risk(5.6) == RiskLevel.HIGH
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_risk_medium(self):
         engine = self._make_engine(baseline_exchange=5.0)
         # ~8% deviation
         assert engine._assess_risk(5.4) == RiskLevel.MEDIUM
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_risk_low(self):
         engine = self._make_engine(baseline_exchange=5.0)
         # ~2% deviation
         assert engine._assess_risk(5.1) == RiskLevel.LOW
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_accepts_finance_config_as_fallback(self):
         engine = FinanceScenarioEngine(config=FinanceConfig())
         assert engine.config.baseline_exchange == 5.75
@@ -379,7 +379,7 @@ class TestFinanceActionEmitter:
 
         return SimulationResult(scenarios=scenarios, baseline=baseline)
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_filter_usd_strengthens(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -394,7 +394,7 @@ class TestFinanceActionEmitter:
         assert len(upside) == 1
         assert upside[0].name == "big-up"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_filter_usd_weakens(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -410,7 +410,7 @@ class TestFinanceActionEmitter:
         assert len(downside) == 1
         assert downside[0].name == "big-down"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     async def test_build_hold_when_no_signals(self):
         emitter = self._make_emitter()
         sim = self._make_simulation(
@@ -427,11 +427,11 @@ class TestFinanceActionEmitter:
         assert dec.decision_type == DecisionType.REPORT
         assert "No actionable" in dec.title
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_exchange_alert_threshold_constant(self):
         assert EXCHANGE_ALERT_THRESHOLD_PCT == 5.0
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_min_probability_constant(self):
         assert MIN_PROBABILITY == 0.3
 
@@ -478,7 +478,7 @@ class TestFinanceMonitor:
             source_scenarios=[source_id],
         )
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_evaluate_decision_produces_scorecard(self):
         monitor = self._make_monitor()
         dec = self._make_decision_object()
@@ -489,7 +489,7 @@ class TestFinanceMonitor:
         assert len(scorecard.predictions_vs_reality) > 0
         assert scorecard.predictions_vs_reality[0].metric == "exchange_rate_deviation_pct"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_evaluate_decision_without_conditions_uses_confidence(self):
         monitor = self._make_monitor()
         dec = self._make_decision_object(conditions=[])
@@ -498,7 +498,7 @@ class TestFinanceMonitor:
 
         assert scorecard.predictions_vs_reality[0].metric == "confidence"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_outcome_beneficial(self):
         monitor = self._make_monitor()
         predictions = [
@@ -513,7 +513,7 @@ class TestFinanceMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "beneficial"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_outcome_detrimental(self):
         monitor = self._make_monitor()
         predictions = [
@@ -528,7 +528,7 @@ class TestFinanceMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "detrimental"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_outcome_neutral(self):
         monitor = self._make_monitor()
         predictions = [
@@ -543,7 +543,7 @@ class TestFinanceMonitor:
         ]
         assert monitor._assess_outcome(predictions) == "neutral"
 
-    @pytest.mark.offline()
+    @pytest.mark.offline
     def test_assess_outcome_empty_predictions(self):
         monitor = self._make_monitor()
         assert monitor._assess_outcome([]) == "neutral"

@@ -206,7 +206,7 @@ def _render_result(result: object, *, pipeline_name: str = "toy") -> None:
     console.print(panel)
 
 
-def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911
+def _stage_detail(result: object, stage: str) -> str:  # noqa: PLR0911, PLR0912
     from universal_gear.core.pipeline import PipelineResult
 
     if not isinstance(result, PipelineResult):
