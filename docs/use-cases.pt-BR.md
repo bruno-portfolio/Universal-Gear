@@ -141,18 +141,17 @@ Para um passo a passo completo, veja [plugins.pt-BR.md](plugins.pt-BR.md). Para 
 
 **Cenário**: Você toma decisões recorrentes no trabalho -- comprar suprimentos, definir preços, escolher fornecedores -- mas não escreve código. Você quer uma forma estruturada de pensar sobre decisões em vez de seguir a intuição.
 
-**Com o Universal Gear**: Gere um modelo de planilha e siga as sete abas:
+**Com o Universal Gear**: Peça a alguém técnico para executar o pipeline e exportar os resultados como planilha:
 
 ```bash
-pip install universal-gear[sheets]
-ugear template
+ugear run agro --sample --output xlsx
 ```
 
-Isso cria o arquivo `ugear-decisao.xlsx`. Abra-o no Excel ou no Google Sheets. Cada aba é uma etapa do processo de decisão, com instruções no topo e um exemplo preenchido (compra de café para um escritório). Preencha as células verdes com os seus próprios dados.
+Isso cria um arquivo `.xlsx` com sete abas -- uma por etapa do pipeline mais um dashboard. Abra-o no Excel ou no Google Sheets. Cada aba contém os resultados do pipeline para aquela etapa, com cabeçalhos de coluna e uma linha de resumo. A aba DASHBOARD mostra hipóteses, ações recomendadas, níveis de risco e precisão histórica.
 
-Quando você completar um ciclo inteiro -- da observação até o feedback -- você terá um registro de decisão documentado e estruturado. Com o tempo, a aba DASHBOARD mostra o seu histórico: quantas decisões você acertou, seu erro médio e o que você aprendeu.
+Você não precisa preencher nada. O pipeline já executou, coletou dados, detectou tendências, projetou cenários e gerou recomendações. Seu trabalho é revisar a aba de decisões, comparar os cenários e agir com base nos alertas.
 
-Sem programação, sem APIs, sem terminal. Apenas uma planilha e um método.
+Sem programação, sem APIs. Abra a planilha gerada e explore os resultados.
 
 ---
 
@@ -182,7 +181,7 @@ Quer construí-lo? Comece por [plugins.pt-BR.md](plugins.pt-BR.md).
 | Analista de Commodities | `ugear run agro` | Hipóteses de tendência de preço, recomendações de venda futura, alertas de risco |
 | Analista Financeiro | `ugear run finance` | Cenários de câmbio e trajetória de juros, alertas de hedge |
 | Analista de BI | `ugear run agro --output json` | JSON estruturado para integração com painéis |
-| Não-Programador | `ugear template` | Planilha guiada para decisões estruturadas sem código |
+| Não-Programador | `ugear run <pipeline> --output xlsx` | Resultados do pipeline exportados como relatório xlsx de 7 abas |
 | Desenvolvedor | `pip install -e ".[dev]"` | SDK completo de plugins, contratos tipados, suíte de testes |
 | Analista de Saúde | `ugear run saude` | Detecção de surtos, projeções de capacidade (futuro) |
 

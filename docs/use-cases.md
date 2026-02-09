@@ -139,18 +139,17 @@ For a complete walkthrough, see [plugins.md](plugins.md). For the data contracts
 
 **Scenario**: You make recurring decisions at work -- purchasing supplies, setting prices, choosing vendors -- but you don't write code. You want a structured way to think through decisions instead of going with gut feeling.
 
-**With Universal Gear**: Generate a spreadsheet template and follow the seven tabs:
+**With Universal Gear**: Ask someone technical to run the pipeline and export results as a spreadsheet:
 
 ```bash
-pip install universal-gear[sheets]
-ugear template
+ugear run agro --sample --output xlsx
 ```
 
-This creates `ugear-decisao.xlsx`. Open it in Excel or Google Sheets. Each tab is one step of the decision process, with instructions at the top and a pre-filled example (buying coffee for an office). Fill in the green cells with your own data.
+This creates a `.xlsx` file with seven tabs -- one per pipeline stage plus a dashboard. Open it in Excel or Google Sheets. Each tab contains the pipeline results for that stage, with column headers and a summary row. The DASHBOARD tab shows hypotheses, recommended actions, risk levels, and historical accuracy.
 
-When you complete a full cycle -- from observation through feedback -- you have a documented, structured decision record. Over time, the DASHBOARD tab shows your track record: how many decisions you got right, your average error, and what you learned.
+You don't need to fill anything in. The pipeline already ran, collected data, detected trends, projected scenarios, and generated recommendations. Your job is to review the decisions tab, compare the scenarios, and act on the alerts.
 
-No programming, no APIs, no terminal. Just a spreadsheet and a method.
+No programming, no APIs. Just open the generated spreadsheet and explore the results.
 
 ---
 
@@ -180,7 +179,7 @@ Want to build it? Start with [plugins.md](plugins.md).
 | Commodity Analyst | `ugear run agro` | Price trend hypotheses, forward-selling recommendations, risk alerts |
 | Financial Analyst | `ugear run finance` | Exchange rate and rate-path scenarios, hedging alerts |
 | BI Analyst | `ugear run agro --output json` | Structured JSON for dashboard integration |
-| Non-Programmer | `ugear template` | Guided spreadsheet for structured decisions without code |
+| Non-Programmer | `ugear run <pipeline> --output xlsx` | Pipeline results exported as 7-tab xlsx report |
 | Developer | `pip install -e ".[dev]"` | Full plugin SDK, typed contracts, test harness |
 | Healthcare Analyst | `ugear run saude` | Outbreak detection, capacity projections (future) |
 

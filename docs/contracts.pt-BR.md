@@ -601,6 +601,7 @@ Avalia decisões passadas em relação à realidade observada e atualiza a confi
 | `scorecards` | `list[Scorecard]` | obrigatório |
 | `sources_updated` | `int` | obrigatório |
 | `thresholds_adjusted` | `int` | obrigatório |
+| `accuracy_trend` | `list[float]` | `[]` |
 | `stage` | `str` | `"feedback"` |
 
 ### Exemplo JSON

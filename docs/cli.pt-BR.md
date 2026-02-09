@@ -1,10 +1,10 @@
-# Refer\u00eancia da CLI
+# Referência da CLI
 
 *[Read in English](cli.md)*
 
 O Universal Gear disponibiliza o comando `ugear`, uma CLI baseada em Typer para
-executar pipelines de intelig\u00eancia de mercado, inspecionar plugins e gerenciar
-configura\u00e7\u00f5es.
+executar pipelines de inteligência de mercado, inspecionar plugins e gerenciar
+configurações.
 
 ```
 ugear [COMMAND] [OPTIONS]
@@ -24,46 +24,53 @@ ugear run <PIPELINE> [OPTIONS]
 
 **Argumentos**
 
-| Argumento  | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                              |
+| Argumento  | Obrigatório | Descrição                                              |
 |------------|-------------|--------------------------------------------------------|
 | `PIPELINE` | Sim         | Nome do pipeline: `toy`, `agro`, ou caminho para arquivo YAML. |
 
-**Op\u00e7\u00f5es**
+**Opções**
 
-| Op\u00e7\u00e3o                        | Curto | Padr\u00e3o     | Descri\u00e7\u00e3o                                                                          |
+| Opção                        | Curto | Padrão     | Descrição                                                                          |
 |------------------------------|-------|------------|-------------------------------------------------------------------------------------|
-| `--verbose`                  | `-v`  | `false`    | Habilita logging no n\u00edvel DEBUG (o padr\u00e3o \u00e9 INFO).                                  |
-| `--json`                     |       | `false`    | Emite sa\u00edda de log estruturada em JSON em vez de texto leg\u00edvel.                     |
-| `--fail-fast / --no-fail-fast` |     | `true`     | Aborta o pipeline na primeira falha de est\u00e1gio (`--no-fail-fast` para continuar).   |
-| `--output`                   | `-o`  | `terminal` | Formato de sa\u00edda: `terminal`, `json` ou `csv`.                                     |
+| `--verbose`                  | `-v`  | `false`    | Habilita logging no nível DEBUG (o padrão é INFO).                                  |
+| `--json`                     |       | `false`    | Emite saída de log estruturada em JSON em vez de texto legível.                     |
+| `--fail-fast / --no-fail-fast` |     | `true`     | Aborta o pipeline na primeira falha de estágio (`--no-fail-fast` para continuar).   |
+| `--output`                   | `-o`  | `terminal` | Formato de saída: `terminal` (padrão), `json`, `csv` ou `xlsx`.                    |
+| `--output-file`              |       | `None`     | Caminho do arquivo de saída para export xlsx (padrão: `ugear-<pipeline>-report.xlsx`). |
 | `--sample`                   |       | `false`    | Usa dados de amostra inclusos em vez de APIs ao vivo (modo offline).                |
-| `--decisions-only`           |       | `false`    | Mostra apenas decis\u00f5es e hist\u00f3rico de acertos, pula logs de est\u00e1gios.               |
-| `--all`                      |       | `false`    | Mostra todas as decis\u00f5es (padr\u00e3o: top 5 por confian\u00e7a).                             |
+| `--decisions-only`           |       | `false`    | Mostra apenas decisões e histórico de acertos, pula logs de estágios.               |
+| `--all`                      |       | `false`    | Mostra todas as decisões (padrão: top 5 por confiança).                             |
 
-**Pipelines dispon\u00edveis**
+**Pipelines disponíveis**
 
-| Nome   | Descri\u00e7\u00e3o                                                                   |
+| Nome   | Descrição                                                                   |
 |--------|-----------------------------------------------------------------------------|
-| `toy`     | Pipeline de dados sint\u00e9ticos. Usa um coletor sint\u00e9tico, processador agregador, detector de anomalias sazonais, motor de cen\u00e1rios condicional, emissor de alertas e monitor de backtest. \u00datil para desenvolvimento e demonstra\u00e7\u00e3o. |
-| `agro`    | Pipeline de agroneg\u00f3cio. Coleta dados reais via coletor agrobr e executa est\u00e1gios espec\u00edficos de agro: processador, analisador, motor de cen\u00e1rios, emissor de a\u00e7\u00f5es e monitor. |
-| `finance` | Pipeline financeiro. Coleta dados macroecon\u00f4micos do BCB (Banco Central do Brasil) e executa est\u00e1gios espec\u00edficos de finan\u00e7as. |
+| `toy`     | Pipeline de dados sintéticos. Usa um coletor sintético, processador agregador, detector de anomalias sazonais, motor de cenários condicional, emissor de alertas e monitor de backtest. Útil para desenvolvimento e demonstração. |
+| `agro`    | Pipeline de agronegócio. Coleta dados reais via coletor agrobr e executa estágios específicos de agro: processador, analisador, motor de cenários, emissor de ações e monitor. |
+| `finance` | Pipeline financeiro. Coleta dados macroeconômicos do BCB (Banco Central do Brasil) e executa estágios específicos de finanças. |
 
-Qualquer outro valor para `PIPELINE` imprime um erro e encerra com c\u00f3digo 1.
+Qualquer outro valor para `PIPELINE` imprime um erro e encerra com código 1.
 
 **Exemplos**
 
 ```bash
-# Executar o pipeline toy com configura\u00e7\u00f5es padr\u00e3o
+# Executar o pipeline toy com configurações padrão
 ugear run toy
 
 # Executar o pipeline agro com logging detalhado
 ugear run agro --verbose
 
-# Executar com sa\u00edda de log em JSON e sem fail-fast
+# Executar com saída de log em JSON e sem fail-fast
 ugear run toy --json --no-fail-fast
 
 # Combinar flags curtas e longas
 ugear run agro -v --json --fail-fast
+
+# Exportar resultados para planilha Excel
+ugear run agro --sample --output xlsx
+
+# Exportar com nome de arquivo personalizado
+ugear run agro --sample --output xlsx --output-file relatorio.xlsx
 ```
 
 Após a execução, um painel formatado com Rich é exibido no terminal mostrando
@@ -90,29 +97,29 @@ ugear plugins [STAGE]
 
 **Argumentos**
 
-| Argumento | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                                            |
+| Argumento | Obrigatório | Descrição                                                            |
 |-----------|-------------|----------------------------------------------------------------------|
-| `STAGE`   | N\u00e3o         | Filtra os resultados para um \u00fanico est\u00e1gio. Omita para listar todos. |
+| `STAGE`   | Não         | Filtra os resultados para um único estágio. Omita para listar todos. |
 
-Nomes de est\u00e1gio v\u00e1lidos: `collector`, `processor`, `analyzer`, `model`, `action`, `monitor`.
+Nomes de estágio válidos: `collector`, `processor`, `analyzer`, `model`, `action`, `monitor`.
 
 **Exemplos**
 
 ```bash
-# Listar todos os plugins registrados em todos os est\u00e1gios
+# Listar todos os plugins registrados em todos os estágios
 ugear plugins
 
 # Listar apenas plugins do tipo collector
 ugear plugins collector
 ```
 
-A sa\u00edda \u00e9 uma tabela Rich com duas colunas: **Stage** e **Plugins**.
+A saída é uma tabela Rich com duas colunas: **Stage** e **Plugins**.
 
 ---
 
 ### `ugear new-plugin`
 
-Cria a estrutura de um novo plugin de dom\u00ednio com todos os seis est\u00e1gios do pipeline.
+Cria a estrutura de um novo plugin de domínio com todos os seis estágios do pipeline.
 
 ```
 ugear new-plugin <NAME>
@@ -120,16 +127,16 @@ ugear new-plugin <NAME>
 
 **Argumentos**
 
-| Argumento | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                              |
+| Argumento | Obrigatório | Descrição                                              |
 |-----------|-------------|--------------------------------------------------------|
 | `NAME`    | Sim         | Nome do plugin em snake_case (ex.: `energy`, `weather`). |
 
 Cria nove arquivos:
 
-- `src/universal_gear/plugins/<name>/` \u2014 `__init__.py`, `config.py`, `collector.py`, `processor.py`, `analyzer.py`, `model.py`, `action.py`, `monitor.py`
-- `tests/test_<name>_plugin.py` \u2014 esqueleto de testes com teste de configura\u00e7\u00e3o e marcadores TODO
+- `src/universal_gear/plugins/<name>/` — `__init__.py`, `config.py`, `collector.py`, `processor.py`, `analyzer.py`, `model.py`, `action.py`, `monitor.py`
+- `tests/test_<name>_plugin.py` — esqueleto de testes com teste de configuração e marcadores TODO
 
-Cada arquivo gerado segue as conven\u00e7\u00f5es do projeto: classe base correta, decorador de registro, assinatura de m\u00e9todo ass\u00edncrono e ordem de importa\u00e7\u00e3o.
+Cada arquivo gerado segue as convenções do projeto: classe base correta, decorador de registro, assinatura de método assíncrono e ordem de importação.
 
 **Exemplos**
 
@@ -150,17 +157,17 @@ ugear check-plugin <NAME>
 
 **Argumentos**
 
-| Argumento | Obrigat\u00f3rio | Descri\u00e7\u00e3o                    |
+| Argumento | Obrigatório | Descrição                    |
 |-----------|-------------|------------------------------|
 | `NAME`    | Sim         | Nome do plugin a ser validado. |
 
-Verifica\u00e7\u00f5es:
+Verificações:
 
-- Todos os sete m\u00f3dulos existem (config + seis est\u00e1gios)
-- Cada m\u00f3dulo de est\u00e1gio cont\u00e9m uma classe que herda da ABC correta
-- O m\u00f3dulo de config exporta uma subclasse de `BaseModel` do Pydantic
+- Todos os sete módulos existem (config + seis estágios)
+- Cada módulo de estágio contém uma classe que herda da ABC correta
+- O módulo de config exporta uma subclasse de `BaseModel` do Pydantic
 
-Encerra com c\u00f3digo 0 se todas as verifica\u00e7\u00f5es passarem, c\u00f3digo 1 se problemas forem encontrados.
+Encerra com código 0 se todas as verificações passarem, código 1 se problemas forem encontrados.
 
 **Exemplos**
 
@@ -171,69 +178,11 @@ ugear check-plugin agro
 
 ---
 
-### `ugear template`
-
-Gera um modelo de planilha (xlsx) para framework de decis\u00e3o.
-
-```
-ugear template [OPTIONS]
-```
-
-**Op\u00e7\u00f5es**
-
-| Op\u00e7\u00e3o      | Curto | Padr\u00e3o               | Descri\u00e7\u00e3o                                            |
-|------------|-------|----------------------|------------------------------------------------------|
-| `--output` | `-o`  | `ugear-decisao.xlsx` | Caminho do arquivo de sa\u00edda para o modelo xlsx.      |
-| `--lang`   |       | `pt`                 | Idioma: `pt` (Portugu\u00eas) ou `en` (Ingl\u00eas).           |
-
-Requer `openpyxl`. Instale com `pip install universal-gear[sheets]`.
-
-**Exemplos**
-
-```bash
-ugear template
-ugear template --output my-decisions.xlsx --lang en
-```
-
----
-
-### `ugear import-sheet`
-
-Converte um modelo de planilha preenchido para JSON.
-
-```
-ugear import-sheet <XLSX_PATH> [OPTIONS]
-```
-
-**Argumentos**
-
-| Argumento   | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                |
-|-------------|-------------|------------------------------------------|
-| `XLSX_PATH` | Sim         | Caminho para o modelo xlsx preenchido.   |
-
-**Op\u00e7\u00f5es**
-
-| Op\u00e7\u00e3o      | Curto | Padr\u00e3o  | Descri\u00e7\u00e3o                                            |
-|------------|-------|---------|------------------------------------------------------|
-| `--output` | `-o`  | `-`     | Caminho do arquivo de sa\u00edda (padr\u00e3o: stdout).        |
-
-Requer `openpyxl`. Instale com `pip install universal-gear[sheets]`.
-
-**Exemplos**
-
-```bash
-ugear import-sheet planilha.xlsx
-ugear import-sheet planilha.xlsx --output result.json
-ugear import-sheet planilha.xlsx | jq '.decisions'
-```
-
----
-
 ### `ugear validate`
 
-Valida um arquivo de configura\u00e7\u00e3o de pipeline sem execut\u00e1-lo.
+Valida um arquivo de configuração de pipeline sem executá-lo.
 
-> **Nota:** Este comando \u00e9 um stub. A l\u00f3gica de valida\u00e7\u00e3o ainda n\u00e3o foi implementada.
+> **Nota:** Este comando é um stub. A lógica de validação ainda não foi implementada.
 
 ```
 ugear validate <CONFIG>
@@ -241,9 +190,9 @@ ugear validate <CONFIG>
 
 **Argumentos**
 
-| Argumento | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                        |
+| Argumento | Obrigatório | Descrição                                        |
 |-----------|-------------|--------------------------------------------------|
-| `CONFIG`  | Sim         | Caminho para um arquivo YAML de configura\u00e7\u00e3o de pipeline. |
+| `CONFIG`  | Sim         | Caminho para um arquivo YAML de configuração de pipeline. |
 
 **Exemplos**
 
@@ -255,9 +204,9 @@ ugear validate pipelines/my-pipeline.yaml
 
 ### `ugear scorecard`
 
-Exibe scorecards de execu\u00e7\u00f5es anteriores de pipelines.
+Exibe scorecards de execuções anteriores de pipelines.
 
-> **Nota:** Este comando \u00e9 um stub. Ele requer uma camada de persist\u00eancia que ainda n\u00e3o est\u00e1 dispon\u00edvel.
+> **Nota:** Este comando é um stub. Ele requer uma camada de persistência que ainda não está disponível.
 
 ```
 ugear scorecard <PIPELINE> [OPTIONS]
@@ -265,23 +214,23 @@ ugear scorecard <PIPELINE> [OPTIONS]
 
 **Argumentos**
 
-| Argumento  | Obrigat\u00f3rio | Descri\u00e7\u00e3o                                              |
+| Argumento  | Obrigatório | Descrição                                              |
 |------------|-------------|--------------------------------------------------------|
-| `PIPELINE` | Sim         | Pipeline cujo hist\u00f3rico de scorecard ser\u00e1 exibido.      |
+| `PIPELINE` | Sim         | Pipeline cujo histórico de scorecard será exibido.      |
 
-**Op\u00e7\u00f5es**
+**Opções**
 
-| Op\u00e7\u00e3o    | Curto | Padr\u00e3o  | Descri\u00e7\u00e3o                                      |
+| Opção    | Curto | Padrão  | Descrição                                      |
 |----------|-------|---------|-------------------------------------------------|
-| `--last` | `-n`  | `5`     | N\u00famero de execu\u00e7\u00f5es recentes a exibir.          |
+| `--last` | `-n`  | `5`     | Número de execuções recentes a exibir.          |
 
 **Exemplos**
 
 ```bash
-# Mostrar as \u00faltimas 5 execu\u00e7\u00f5es do pipeline agro
+# Mostrar as últimas 5 execuções do pipeline agro
 ugear scorecard agro
 
-# Mostrar as \u00faltimas 10 execu\u00e7\u00f5es
+# Mostrar as últimas 10 execuções
 ugear scorecard agro --last 10
 ugear scorecard agro -n 10
 ```
@@ -290,24 +239,24 @@ ugear scorecard agro -n 10
 
 ## Comportamento global
 
-- **Logging** \u00e9 configurado por execu\u00e7\u00e3o atrav\u00e9s das flags `--verbose` e `--json`
-  no `ugear run`. O modo verbose define o n\u00edvel como DEBUG; caso contr\u00e1rio,
-  INFO \u00e9 utilizado.
-- **C\u00f3digos de sa\u00edda**: comandos encerram com `0` em caso de sucesso. `ugear run`
-  encerra com `1` quando um nome de pipeline desconhecido \u00e9 fornecido.
-- **Sa\u00edda Rich**: toda a sa\u00edda no terminal (tabelas, pain\u00e9is, indicadores de status)
-  \u00e9 renderizada atrav\u00e9s do Rich com modo de terminal for\u00e7ado.
+- **Logging** é configurado por execução através das flags `--verbose` e `--json`
+  no `ugear run`. O modo verbose define o nível como DEBUG; caso contrário,
+  INFO é utilizado.
+- **Códigos de saída**: comandos encerram com `0` em caso de sucesso. `ugear run`
+  encerra com `1` quando um nome de pipeline desconhecido é fornecido.
+- **Saída Rich**: toda a saída no terminal (tabelas, painéis, indicadores de status)
+  é renderizada através do Rich com modo de terminal forçado.
 
 ---
 
 ## Ponto de entrada
 
-A CLI \u00e9 registrada como um console script no `pyproject.toml`:
+A CLI é registrada como um console script no `pyproject.toml`:
 
 ```toml
 [project.scripts]
 ugear = "universal_gear.cli.main:app"
 ```
 
-Ap\u00f3s instalar o pacote (`pip install -e .`), o comando `ugear` fica dispon\u00edvel
+Após instalar o pacote (`pip install -e .`), o comando `ugear` fica disponível
 no ambiente ativo.

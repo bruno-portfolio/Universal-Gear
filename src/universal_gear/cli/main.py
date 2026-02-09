@@ -27,6 +27,7 @@ def _run_toy_pipeline(
     json_output: bool,
     fail_fast: bool,
     output: str,
+    output_file: str | None = None,
     decisions_only: bool = False,
     show_all: bool = False,
 ) -> None:
@@ -75,6 +76,7 @@ def _run_toy_pipeline(
         result,
         pipeline_name="toy",
         output=output,
+        output_file=output_file,
         decisions_only=decisions_only,
         show_all=show_all,
     )
@@ -86,6 +88,7 @@ def _run_agro_pipeline(
     json_output: bool,
     fail_fast: bool,
     output: str,
+    output_file: str | None = None,
     sample: bool,
     decisions_only: bool = False,
     show_all: bool = False,
@@ -122,6 +125,7 @@ def _run_agro_pipeline(
         result,
         pipeline_name="agro",
         output=output,
+        output_file=output_file,
         decisions_only=decisions_only,
         show_all=show_all,
     )
@@ -133,6 +137,7 @@ def _run_finance_pipeline(
     json_output: bool,
     fail_fast: bool,
     output: str,
+    output_file: str | None = None,
     decisions_only: bool = False,
     show_all: bool = False,
 ) -> None:
@@ -168,6 +173,7 @@ def _run_finance_pipeline(
         result,
         pipeline_name="finance",
         output=output,
+        output_file=output_file,
         decisions_only=decisions_only,
         show_all=show_all,
     )
@@ -178,6 +184,7 @@ def _emit_result(
     *,
     pipeline_name: str = "toy",
     output: str = "terminal",
+    output_file: str | None = None,
     decisions_only: bool = False,
     show_all: bool = False,
 ) -> None:
@@ -199,6 +206,21 @@ def _emit_result(
         from universal_gear.cli.export import export_csv
 
         print(export_csv(result), end="")
+        return
+
+    if output == "xlsx":
+        import importlib.util
+        from pathlib import Path
+
+        if importlib.util.find_spec("openpyxl") is None:
+            console.print("[red]openpyxl is required. Run: pip install universal-gear[sheets][/]")
+            raise typer.Exit(code=1)
+
+        from universal_gear.cli.export import export_xlsx
+
+        xlsx_path = Path(output_file or f"ugear-{pipeline_name}-report.xlsx")
+        export_xlsx(result, xlsx_path)
+        console.print(f"[green]Report saved to {xlsx_path}[/]")
         return
 
     _render_result(
@@ -333,7 +355,12 @@ def run(
         "terminal",
         "--output",
         "-o",
-        help="Output format: terminal (default), json, csv",
+        help="Output format: terminal (default), json, csv, xlsx",
+    ),
+    output_file: str | None = typer.Option(
+        None,
+        "--output-file",
+        help="Output file path for xlsx export (default: ugear-<pipeline>-report.xlsx)",
     ),
     sample: bool = typer.Option(
         False,
@@ -352,9 +379,14 @@ def run(
     ),
 ) -> None:
     """Run a pipeline end-to-end."""
-    if output not in ("terminal", "json", "csv"):
-        console.print(f"[red]Invalid output format '{output}'. Choose from: terminal, json, csv[/]")
+    valid_formats = ("terminal", "json", "csv", "xlsx")
+    if output not in valid_formats:
+        opts = ", ".join(valid_formats)
+        console.print(f"[red]Invalid output format '{output}'. Choose from: {opts}[/]")
         raise typer.Exit(code=1)
+
+    if output == "xlsx":
+        output_file = output_file or f"ugear-{pipeline}-report.xlsx"
 
     match pipeline:
         case "toy":
@@ -363,6 +395,7 @@ def run(
                 json_output=json_output,
                 fail_fast=fail_fast,
                 output=output,
+                output_file=output_file,
                 decisions_only=decisions_only,
                 show_all=show_all,
             )
@@ -372,6 +405,7 @@ def run(
                 json_output=json_output,
                 fail_fast=fail_fast,
                 output=output,
+                output_file=output_file,
                 sample=sample,
                 decisions_only=decisions_only,
                 show_all=show_all,
@@ -382,6 +416,7 @@ def run(
                 json_output=json_output,
                 fail_fast=fail_fast,
                 output=output,
+                output_file=output_file,
                 decisions_only=decisions_only,
                 show_all=show_all,
             )
@@ -450,7 +485,7 @@ def check_plugin(
     console.print(f"[green]Plugin '{name}' passed all checks.[/]")
 
 
-@app.command()
+@app.command(hidden=True)
 def template(
     output: str = typer.Option(
         "ugear-decisao.xlsx",
@@ -478,7 +513,7 @@ def template(
     console.print(f"[green]Template saved to {path}[/]")
 
 
-@app.command("import-sheet")
+@app.command("import-sheet", hidden=True)
 def import_sheet(
     xlsx_path: str = typer.Argument(help="Path to the filled xlsx template"),
     output: str = typer.Option(

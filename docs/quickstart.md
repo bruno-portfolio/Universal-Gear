@@ -149,14 +149,14 @@ For a complete walkthrough, see [tutorial-first-plugin.md](tutorial-first-plugin
 
 ## Use Without Code
 
-Generate a guided spreadsheet template:
+Ask someone technical to export the pipeline results as a spreadsheet:
 
-```
+```bash
 pip install universal-gear[sheets]
-ugear template
+ugear run agro --sample --output xlsx
 ```
 
-This creates a structured xlsx with seven tabs following the six-stage loop. Fill in the green cells, track your decisions, and export to JSON when ready.
+Open the generated `ugear-agro-report.xlsx` in Excel or Google Sheets.
 
 ---
 

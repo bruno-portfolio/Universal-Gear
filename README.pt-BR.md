@@ -84,40 +84,26 @@ Use `--output json` pra obter saída estruturada que alimenta dashboards e relat
 ugear run agro --output json
 ```
 
-A saída é JSON estruturado que pode ser importado diretamente no Power BI, Tableau, Metabase ou qualquer ferramenta que consome dados em JSON. CSV também disponível via `--output csv`.
+A saída é JSON estruturado que pode ser importado diretamente no Power BI, Tableau, Metabase ou qualquer ferramenta que consome dados em JSON. CSV também disponível via `--output csv`. Para planilhas Excel, use `--output xlsx` (requer `pip install universal-gear[sheets]`).
 
 ## Não Programa? Comece Aqui
 
-Você não precisa saber programar. O Universal Gear inclui uma planilha que te guia pelo mesmo processo de decisão, passo a passo.
-
-**O que você recebe:** Um arquivo Excel com sete abas. Cada aba é um passo do processo. Cada aba tem instruções no topo dizendo exatamente o que fazer. As células verdes são pra você preencher. Tem um exemplo completo já preenchido (compra de café pro escritório) pra você ver como um ciclo pronto fica antes de começar o seu.
-
-Os sete passos:
-
-| Aba | O que você faz |
-|-----|----------------|
-| **OBSERVAR** | Anote o que você viu: preços, quantidades, notícias. Uma linha por observação. |
-| **COMPRIMIR** | Resuma: qual a média? Está subindo ou descendo? Quanto variou? |
-| **HIPÓTESE** | Escreva o que você acha que está acontecendo -- e o que provaria que está errado. |
-| **SIMULAR** | Imagine pelo menos dois futuros: um onde dá certo e um onde dá errado. |
-| **DECIDIR** | Tome sua decisão. Qual sua confiança? O que acontece se você errar? |
-| **FEEDBACK** | Depois que o tempo passou: o que realmente aconteceu? Você acertou? O que aprendeu? |
-| **DASHBOARD** | Seu placar ao longo do tempo. Quantas decisões você acertou? |
-
-Pra gerar a planilha:
+Você não precisa saber programar. Peça pra alguém técnico rodar o pipeline
+e exportar os resultados como planilha que você abre no Excel:
 
 ```bash
 pip install universal-gear[sheets]
-ugear template
+ugear run agro --sample --output xlsx
 ```
 
-Isso cria `ugear-decisao.xlsx`. Abra no Excel ou Google Sheets e comece a preencher.
+Isso gera um arquivo `ugear-agro-report.xlsx` com sete abas -- uma pra
+cada etapa da análise (Observar, Comprimir, Hipótese, Simular, Decidir,
+Feedback, Dashboard). Abra no Excel, Google Sheets ou LibreOffice Calc e
+explore os resultados.
 
-Quando quiser experimentar a versão em código, exporte a planilha pra um formato que o programa entende:
-
-```bash
-ugear import-sheet minhas-decisoes.xlsx
-```
+A aba Dashboard mostra métricas calculadas: total de decisões, taxa de
+acerto, erro médio e status geral. Nada pra preencher -- tudo é calculado
+a partir da execução do pipeline.
 
 ## Crie Seu Próprio Plugin
 
@@ -142,7 +128,7 @@ O Universal Gear cresce em camadas -- cada uma torna o framework acessível pra 
 
 - ~~**Output do CLI**~~ -- Painéis de decisão, histórico de acertos, exportação JSON/CSV
 - ~~**Scaffold de plugins**~~ -- `ugear new-plugin` e `ugear check-plugin` pra criar domínios
-- ~~**Planilha template**~~ -- `ugear template` gera xlsx guiado pra não-programadores
+- **Planilha de resultados** -- `ugear run <pipeline> --output xlsx` exporta resultados em xlsx com 7 abas
 - **Conteúdo e tutoriais** -- Artigos explicando a metodologia em linguagem acessível
 - **Interface web** -- Webapp mínima pra pipelines de decisão pelo navegador
 

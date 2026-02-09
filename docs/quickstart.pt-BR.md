@@ -151,14 +151,14 @@ Para um passo a passo completo, consulte [tutorial-first-plugin.pt-BR.md](tutori
 
 ## Use Sem Código
 
-Gere um modelo de planilha guiado:
+Peça pra alguém técnico exportar os resultados do pipeline como planilha:
 
-```
+```bash
 pip install universal-gear[sheets]
-ugear template
+ugear run agro --sample --output xlsx
 ```
 
-Isso cria um xlsx estruturado com sete abas seguindo o ciclo de seis estágios. Preencha as células verdes, acompanhe suas decisões e exporte para JSON quando estiver pronto.
+Abra o arquivo `ugear-agro-report.xlsx` gerado no Excel ou Google Sheets.
 
 ---
 

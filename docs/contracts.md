@@ -599,6 +599,7 @@ Evaluates past decisions against observed reality and updates source reliability
 | `scorecards` | `list[Scorecard]` | required |
 | `sources_updated` | `int` | required |
 | `thresholds_adjusted` | `int` | required |
+| `accuracy_trend` | `list[float]` | `[]` |
 | `stage` | `str` | `"feedback"` |
 
 ### JSON Example

@@ -32,7 +32,8 @@ ugear run <PIPELINE> [OPTIONS]
 | `--verbose`                  | `-v`  | `false`    | Enable DEBUG-level logging (default is INFO).                               |
 | `--json`                     |       | `false`    | Emit structured JSON log output instead of human-readable text.             |
 | `--fail-fast / --no-fail-fast` |     | `true`     | Abort the pipeline on the first stage failure (`--no-fail-fast` to continue). |
-| `--output`                   | `-o`  | `terminal` | Output format: `terminal`, `json`, or `csv`.                               |
+| `--output`                   | `-o`  | `terminal` | Output format: `terminal` (default), `json`, `csv`, or `xlsx`.             |
+| `--output-file`              |       | `None`     | Output file path for xlsx export (default: `ugear-<pipeline>-report.xlsx`). |
 | `--sample`                   |       | `false`    | Use bundled sample data instead of live APIs (offline mode).                |
 | `--decisions-only`           |       | `false`    | Show only decisions and track record, skip stage logs.                      |
 | `--all`                      |       | `false`    | Show all decisions (default: top 5 by confidence).                          |
@@ -61,6 +62,12 @@ ugear run toy --json --no-fail-fast
 
 # Combine short and long flags
 ugear run agro -v --json --fail-fast
+
+# Export results to Excel spreadsheet
+ugear run agro --sample --output xlsx
+
+# Export with custom filename
+ugear run agro --sample --output xlsx --output-file relatorio.xlsx
 ```
 
 After execution, a Rich-formatted panel is printed to the terminal showing
@@ -163,64 +170,6 @@ Exits with code 0 if all checks pass, code 1 if issues are found.
 ```bash
 ugear check-plugin weather
 ugear check-plugin agro
-```
-
----
-
-### `ugear template`
-
-Generate a decision-framework spreadsheet template (xlsx).
-
-```
-ugear template [OPTIONS]
-```
-
-**Options**
-
-| Option     | Short | Default              | Description                                      |
-|------------|-------|----------------------|--------------------------------------------------|
-| `--output` | `-o`  | `ugear-decisao.xlsx` | Output file path for the xlsx template.          |
-| `--lang`   |       | `pt`                 | Language: `pt` (Portuguese) or `en` (English).   |
-
-Requires `openpyxl`. Install with `pip install universal-gear[sheets]`.
-
-**Examples**
-
-```bash
-ugear template
-ugear template --output my-decisions.xlsx --lang en
-```
-
----
-
-### `ugear import-sheet`
-
-Convert a filled spreadsheet template to JSON.
-
-```
-ugear import-sheet <XLSX_PATH> [OPTIONS]
-```
-
-**Arguments**
-
-| Argument    | Required | Description                          |
-|-------------|----------|--------------------------------------|
-| `XLSX_PATH` | Yes      | Path to the filled xlsx template.    |
-
-**Options**
-
-| Option     | Short | Default | Description                                      |
-|------------|-------|---------|--------------------------------------------------|
-| `--output` | `-o`  | `-`     | Output file path (default: stdout).              |
-
-Requires `openpyxl`. Install with `pip install universal-gear[sheets]`.
-
-**Examples**
-
-```bash
-ugear import-sheet planilha.xlsx
-ugear import-sheet planilha.xlsx --output result.json
-ugear import-sheet planilha.xlsx | jq '.decisions'
 ```
 
 ---
